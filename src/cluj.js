@@ -189,5 +189,22 @@ modalClose.addEventListener("click", () => {
   modal.classList.remove("show"); // 🔁 Changed from add("hidden")
   
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdownBtn = document.getElementById("dropdownButton");
+  const dropdownOptions = document.getElementById("dropdownOptions");
+
+  dropdownBtn.addEventListener("click", () => {
+    dropdownOptions.style.display =
+      dropdownOptions.style.display === "block" ? "none" : "block";
+  });
+
+  // Close dropdown if clicked outside
+  document.addEventListener("click", (e) => {
+    if (!dropdownBtn.contains(e.target) && !dropdownOptions.contains(e.target)) {
+      dropdownOptions.style.display = "none";
+    }
+  });
+});
+
 window.businesses = businesses;
 

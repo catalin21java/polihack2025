@@ -686,24 +686,6 @@ input, select, textarea {
     grid-column: span 4;
 }
 
-.rewards-list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-}
-
-.reward-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
-    padding: var(--spacing-sm);
-    border-radius: var(--border-radius-md);
-    transition: var(--transition-fast);
-}
-
-.reward-item:hover {
-    background-color: var(--background);
-}
 
 .reward-img {
     position: relative;
@@ -1052,7 +1034,93 @@ input, select, textarea {
     font-size: 0.9rem;
     color: var(--dark);
 }
+.challenges-section {
+    grid-column: span 4;
+}
 
+.challenges-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    scrollbar-width: none;
+}
+
+.challenges-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.challenge-card {
+    flex: 0 0 auto;
+    width: 180px;
+    background-color: var(--background);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    scroll-snap-align: start;
+    text-align: center;
+    transition: transform var(--transition-fast);
+}
+
+.challenge-card:hover {
+    transform: translateY(-5px);
+}
+
+.challenge-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.challenge-info h4 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.challenge-info p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+.challenge-info .points {
+    font-weight: bold;
+    color: var(--primary-dark);
+}
+.rewards-list {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    scrollbar-width: none; /* Firefox */
+  }
+  
+  .rewards-list::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+  }
+  
+  .reward-item {
+    flex: 0 0 auto;
+    width: 160px;
+    background-color: var(--background);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    transition: var(--transition-fast);
+  }
+  
+  .reward-item:hover {
+    background-color: var(--card-bg);
+  }
+  
 /* ===== RESPONSIVE STYLES ===== */
 @media (max-width: 1400px) {
     .activity-chart {

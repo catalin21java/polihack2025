@@ -41,6 +41,10 @@ document.addEventListener('DOMContentLoaded', function() {
     handleResize();
     window.addEventListener('resize', handleResize);
 
+    // ===== INITIALIZE CHARTS =====
+    // Initialize all charts first, to ensure they exist when we update them
+    initializeAllCharts();
+    
     // ===== GOOGLE FIT INTEGRATION =====
     // Initialize the health device connection button
     initializeHealthConnect();
@@ -338,8 +342,89 @@ document.addEventListener('DOMContentLoaded', function() {
             const activityData = await activityResponse.json();
             console.log('[GoogleFit] Activity data:', activityData);
             
+            // Fetch sleep data if available
+            let sleepData = null;
+            try {
+                const sleepResponse = await fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        aggregateBy: [{
+                            dataTypeName: 'com.google.sleep.segment'
+                        }],
+                        bucketByTime: { durationMillis: dayMillis },
+                        startTimeMillis: startTimeMillis,
+                        endTimeMillis: endTimeMillis
+                    })
+                });
+                
+                if (sleepResponse.ok) {
+                    sleepData = await sleepResponse.json();
+                    console.log('[GoogleFit] Sleep data:', sleepData);
+                }
+            } catch (sleepError) {
+                console.warn('[GoogleFit] Sleep data not available:', sleepError);
+            }
+            
+            // Fetch heart rate data if available
+            let heartRateData = null;
+            try {
+                const heartRateResponse = await fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        aggregateBy: [{
+                            dataTypeName: 'com.google.heart_rate.bpm'
+                        }],
+                        bucketByTime: { durationMillis: dayMillis },
+                        startTimeMillis: startTimeMillis,
+                        endTimeMillis: endTimeMillis
+                    })
+                });
+                
+                if (heartRateResponse.ok) {
+                    heartRateData = await heartRateResponse.json();
+                    console.log('[GoogleFit] Heart rate data:', heartRateData);
+                }
+            } catch (heartRateError) {
+                console.warn('[GoogleFit] Heart rate data not available:', heartRateError);
+            }
+            
+            // Fetch weight data if available
+            let weightData = null;
+            try {
+                const weightResponse = await fetch('https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        aggregateBy: [{
+                            dataTypeName: 'com.google.weight'
+                        }],
+                        bucketByTime: { durationMillis: dayMillis },
+                        startTimeMillis: startTimeMillis,
+                        endTimeMillis: endTimeMillis
+                    })
+                });
+                
+                if (weightResponse.ok) {
+                    weightData = await weightResponse.json();
+                    console.log('[GoogleFit] Weight data:', weightData);
+                }
+            } catch (weightError) {
+                console.warn('[GoogleFit] Weight data not available:', weightError);
+            }
+            
             // Parse the response data
-            const parsedData = parseGoogleFitData(stepsData, caloriesData, activityData);
+            const parsedData = parseGoogleFitData(stepsData, caloriesData, activityData, sleepData, heartRateData, weightData);
             
             // Update UI with fetched data
             updateHealthMetrics(parsedData);
@@ -364,13 +449,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Parse Google Fit API response data
-    function parseGoogleFitData(stepsData, caloriesData, activityData) {
+    function parseGoogleFitData(stepsData, caloriesData, activityData, sleepData, heartRateData, weightData) {
         try {
             // Initialize the result data structure
             const result = {
                 steps: 0,
                 activeMinutes: 0,
                 caloriesBurned: 0,
+                sleepDuration: {
+                    hours: 0,
+                    minutes: 0
+                },
+                heartRate: {
+                    current: 0,
+                    resting: 0,
+                    values: []
+                },
+                bodyStats: {
+                    weight: 0,
+                    height: 175, // Default height in cm (not usually provided by Google Fit)
+                    bmi: 0,
+                    bodyFat: 0
+                },
                 dailyActivity: {
                     days: [],
                     steps: [],
@@ -496,10 +596,97 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set total active minutes
             result.activeMinutes = totalActiveMinutes;
             
-            // Fill in simulated health data for properties we couldn't fetch
-            const simulatedData = getSimulatedHealthData();
-            result.heartRate = simulatedData.heartRate;
-            result.sleepDuration = simulatedData.sleepDuration;
+            // Process sleep data
+            if (sleepData && sleepData.bucket) {
+                let totalSleepMillis = 0;
+                
+                sleepData.bucket.forEach(bucket => {
+                    if (bucket.dataset && bucket.dataset[0] && bucket.dataset[0].point && bucket.dataset[0].point.length > 0) {
+                        bucket.dataset[0].point.forEach(point => {
+                            if (point.value && point.value.length > 0 && point.startTimeNanos && point.endTimeNanos) {
+                                // Only count actual sleep stages (not awake)
+                                const sleepStage = point.value[0].intVal;
+                                if (sleepStage >= 1 && sleepStage <= 4) { // Sleep stages
+                                    const durationMillis = (parseInt(point.endTimeNanos) - parseInt(point.startTimeNanos)) / 1000000;
+                                    totalSleepMillis += durationMillis;
+                                }
+                            }
+                        });
+                    }
+                });
+                
+                // Convert milliseconds to hours and minutes
+                const totalSleepHours = totalSleepMillis / (60 * 60 * 1000);
+                result.sleepDuration.hours = Math.floor(totalSleepHours);
+                result.sleepDuration.minutes = Math.round((totalSleepHours - result.sleepDuration.hours) * 60);
+            }
+            
+            // Process heart rate data
+            if (heartRateData && heartRateData.bucket) {
+                let heartRateValues = [];
+                let heartRateSum = 0;
+                let heartRateCount = 0;
+                
+                heartRateData.bucket.forEach(bucket => {
+                    if (bucket.dataset && bucket.dataset[0] && bucket.dataset[0].point && bucket.dataset[0].point.length > 0) {
+                        bucket.dataset[0].point.forEach(point => {
+                            if (point.value && point.value.length > 0) {
+                                const bpm = Math.round(point.value[0].fpVal);
+                                heartRateValues.push(bpm);
+                                heartRateSum += bpm;
+                                heartRateCount++;
+                            }
+                        });
+                    }
+                });
+                
+                if (heartRateCount > 0) {
+                    // Calculate average heart rate as current
+                    result.heartRate.current = Math.round(heartRateSum / heartRateCount);
+                    
+                    // Estimate resting heart rate as the lowest 10% of readings
+                    if (heartRateValues.length > 0) {
+                        heartRateValues.sort((a, b) => a - b);
+                        const lowerBound = Math.floor(heartRateValues.length * 0.1);
+                        const lowerValues = heartRateValues.slice(0, Math.max(lowerBound, 1));
+                        const restingHr = lowerValues.reduce((sum, val) => sum + val, 0) / lowerValues.length;
+                        result.heartRate.resting = Math.round(restingHr);
+                    }
+                    
+                    // Get the 10 most recent heart rate values for chart
+                    result.heartRate.values = heartRateValues.slice(-10);
+                }
+            }
+            
+            // Process weight data
+            if (weightData && weightData.bucket) {
+                let latestWeight = 0;
+                let latestTimestamp = 0;
+                
+                weightData.bucket.forEach(bucket => {
+                    if (bucket.dataset && bucket.dataset[0] && bucket.dataset[0].point && bucket.dataset[0].point.length > 0) {
+                        bucket.dataset[0].point.forEach(point => {
+                            if (point.value && point.value.length > 0 && point.startTimeNanos) {
+                                const timestamp = parseInt(point.startTimeNanos);
+                                if (timestamp > latestTimestamp) {
+                                    latestTimestamp = timestamp;
+                                    latestWeight = point.value[0].fpVal;
+                                }
+                            }
+                        });
+                    }
+                });
+                
+                if (latestWeight > 0) {
+                    result.bodyStats.weight = parseFloat(latestWeight.toFixed(1));
+                    
+                    // Calculate BMI if we have height
+                    if (result.bodyStats.height > 0) {
+                        const heightInMeters = result.bodyStats.height / 100;
+                        result.bodyStats.bmi = parseFloat((latestWeight / (heightInMeters * heightInMeters)).toFixed(1));
+                    }
+                }
+            }
             
             console.log('[GoogleFit] Parsed data:', result);
             return result;
@@ -509,91 +696,168 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Update UI with health data
+    function updateHealthMetrics(data) {
+        try {
+            console.log('[GoogleFit] Updating UI with health metrics:', data);
+            
+            // Update steps
+            const stepsElement = document.querySelector('.health-card:nth-child(1) .health-details h3');
+            if (stepsElement && data.steps) {
+                stepsElement.textContent = data.steps.toLocaleString();
+            }
+            
+            // Update active minutes
+            const activeMinElement = document.querySelector('.health-card:nth-child(2) .health-details h3');
+            if (activeMinElement && data.activeMinutes) {
+                activeMinElement.textContent = data.activeMinutes + ' min';
+            }
+            
+            // Update calories burned
+            const caloriesElement = document.querySelector('.health-card:nth-child(3) .health-details h3');
+            if (caloriesElement && data.caloriesBurned) {
+                caloriesElement.textContent = data.caloriesBurned.toLocaleString();
+            }
+            
+            // Update sleep duration
+            const sleepElement = document.querySelector('.health-card:nth-child(4) .health-details h3');
+            if (sleepElement && data.sleepDuration) {
+                sleepElement.textContent = `${data.sleepDuration.hours}h ${data.sleepDuration.minutes}m`;
+            }
+            
+            // Update heart rate if available
+            const hrElement = document.querySelector('.current-hr');
+            if (hrElement && data.heartRate && data.heartRate.current) {
+                hrElement.innerHTML = `<i class="fas fa-heart"></i> ${data.heartRate.current} bpm`;
+            }
+            
+            // Update body stats if available
+            if (data.bodyStats) {
+                // Weight
+                const weightElement = document.querySelector('.stat-item:nth-child(1) .stat-value');
+                if (weightElement && data.bodyStats.weight) {
+                    weightElement.textContent = `${data.bodyStats.weight} kg`;
+                }
+                
+                // BMI
+                const bmiElement = document.querySelector('.stat-item:nth-child(3) .stat-value');
+                if (bmiElement && data.bodyStats.bmi) {
+                    bmiElement.textContent = data.bodyStats.bmi.toString();
+                }
+            }
+            
+            // Update activity chart if it exists and we have daily activity data
+            if (window.activityChart && data.dailyActivity) {
+                console.log('[GoogleFit] Updating activity chart with data:', data.dailyActivity);
+                window.activityChart.data.labels = data.dailyActivity.days;
+                window.activityChart.data.datasets[0].data = data.dailyActivity.steps;
+                window.activityChart.data.datasets[1].data = data.dailyActivity.activeMinutes;
+                window.activityChart.data.datasets[2].data = data.dailyActivity.calories.map(cal => cal / 25); // Scale down calories for chart visibility
+                window.activityChart.update();
+            } else {
+                console.warn('[GoogleFit] Cannot update activity chart: Chart or data not available', {
+                    chartExists: !!window.activityChart,
+                    dataExists: !!data.dailyActivity
+                });
+            }
+            
+            // Update heart rate chart if it exists
+            if (window.heartRateChart && data.heartRate && data.heartRate.values.length > 0) {
+                console.log('[GoogleFit] Updating heart rate chart with values:', data.heartRate.values);
+                const timeLabels = Array.from({ length: data.heartRate.values.length }, (_, i) => 
+                    `-${data.heartRate.values.length - i} min`
+                );
+                
+                window.heartRateChart.data.labels = timeLabels;
+                window.heartRateChart.data.datasets[0].data = data.heartRate.values;
+                window.heartRateChart.update();
+            }
+            
+            // Update goals progress
+            updateGoalsProgress(data);
+        } catch (err) {
+            console.error('[GoogleFit] Error updating health metrics:', err);
+            showNotification('Error updating health metrics: ' + err.message, 'error');
+        }
+    }
+
+    // Update goals progress based on real data
+    function updateGoalsProgress(data) {
+        // Steps goal progress
+        const stepsGoalElement = document.querySelector('.goal-item:nth-child(1)');
+        if (stepsGoalElement && data.steps) {
+            const stepsGoal = 10000; // Default goal
+            const percentage = Math.min(Math.round((data.steps / stepsGoal) * 100), 100);
+            
+            const progressBar = stepsGoalElement.querySelector('.progress-fill');
+            const statsText = stepsGoalElement.querySelector('.goal-stats span:first-child');
+            const percentText = stepsGoalElement.querySelector('.goal-stats span:last-child');
+            
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+            if (statsText) statsText.textContent = `${data.steps.toLocaleString()} / ${stepsGoal.toLocaleString()} steps`;
+            if (percentText) percentText.textContent = `${percentage}%`;
+        }
+        
+        // Active minutes goal progress
+        const activeMinGoalElement = document.querySelector('.goal-item:nth-child(3)');
+        if (activeMinGoalElement && data.activeMinutes) {
+            const activeMinGoal = 50; // Default goal
+            const percentage = Math.min(Math.round((data.activeMinutes / activeMinGoal) * 100), 100);
+            
+            const progressBar = activeMinGoalElement.querySelector('.progress-fill');
+            const statsText = activeMinGoalElement.querySelector('.goal-stats span:first-child');
+            const percentText = activeMinGoalElement.querySelector('.goal-stats span:last-child');
+            
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+            if (statsText) statsText.textContent = `${data.activeMinutes} / ${activeMinGoal} minutes`;
+            if (percentText) percentText.textContent = `${percentage}%`;
+        }
+        
+        // Sleep goal progress
+        const sleepGoalElement = document.querySelector('.goal-item:nth-child(4)');
+        if (sleepGoalElement && data.sleepDuration) {
+            const sleepGoalHours = 8; // Default goal in hours
+            const sleepDurationHours = data.sleepDuration.hours + (data.sleepDuration.minutes / 60);
+            const percentage = Math.min(Math.round((sleepDurationHours / sleepGoalHours) * 100), 100);
+            
+            const progressBar = sleepGoalElement.querySelector('.progress-fill');
+            const statsText = sleepGoalElement.querySelector('.goal-stats span:first-child');
+            const percentText = sleepGoalElement.querySelector('.goal-stats span:last-child');
+            
+            if (progressBar) progressBar.style.width = `${percentage}%`;
+            if (statsText) statsText.textContent = `${data.sleepDuration.hours}h ${data.sleepDuration.minutes}m / ${sleepGoalHours}h 00m`;
+            if (percentText) percentText.textContent = `${percentage}%`;
+        }
+    }
+
     // Get simulated health data (fallback)
     function getSimulatedHealthData() {
         return {
-            steps: 12478,
-            activeMinutes: 65,
-            caloriesBurned: 2134,
+            steps: 8241,
+            activeMinutes: 47,
+            caloriesBurned: 1876,
             sleepDuration: {
-                hours: 6,
-                minutes: 45
+                hours: 7,
+                minutes: 15
             },
             heartRate: {
                 current: 72,
                 resting: 64,
                 values: [62, 64, 68, 70, 74, 78, 72, 68, 66, 64]
             },
+            bodyStats: {
+                weight: 68.5,
+                height: 175,
+                bmi: 22.4,
+                bodyFat: 18.2
+            },
             dailyActivity: {
                 days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-                steps: [8542, 9321, 10458, 12478, 9876, 7542, 11245],
-                activeMinutes: [45, 52, 58, 65, 48, 40, 62],
-                calories: [1890, 1950, 2050, 2134, 1920, 1760, 2080]
+                steps: [8542, 9321, 10458, 8241, 9876, 7542, 11245],
+                activeMinutes: [45, 52, 58, 47, 48, 40, 62],
+                calories: [1890, 1950, 2050, 1876, 1920, 1760, 2080]
             }
         };
-    }
-
-    // Update UI with health data
-    function updateHealthMetrics(data) {
-        // Update steps
-        const stepsElement = document.querySelector('.health-card:nth-child(1) .health-details h3');
-        if (stepsElement && data.steps) {
-            stepsElement.textContent = data.steps.toLocaleString();
-        }
-        
-        // Update active minutes
-        const activeMinElement = document.querySelector('.health-card:nth-child(2) .health-details h3');
-        if (activeMinElement && data.activeMinutes) {
-            activeMinElement.textContent = data.activeMinutes + ' min';
-        }
-        
-        // Update calories burned
-        const caloriesElement = document.querySelector('.health-card:nth-child(3) .health-details h3');
-        if (caloriesElement && data.caloriesBurned) {
-            caloriesElement.textContent = data.caloriesBurned.toLocaleString();
-        }
-        
-        // Update sleep duration
-        const sleepElement = document.querySelector('.health-card:nth-child(4) .health-details h3');
-        if (sleepElement && data.sleepDuration) {
-            sleepElement.textContent = `${data.sleepDuration.hours}h ${data.sleepDuration.minutes}m`;
-        }
-        
-        // Update heart rate
-        const hrElement = document.querySelector('.current-hr');
-        if (hrElement && data.heartRate && data.heartRate.current) {
-            hrElement.innerHTML = `<i class="fas fa-heart"></i> ${data.heartRate.current} bpm`;
-        }
-        
-        // Update activity chart if it exists
-        if (activityChart && data.dailyActivity) {
-            activityChart.data.labels = data.dailyActivity.days;
-            activityChart.data.datasets[0].data = data.dailyActivity.steps;
-            activityChart.data.datasets[1].data = data.dailyActivity.activeMinutes;
-            activityChart.data.datasets[2].data = data.dailyActivity.calories.map(cal => cal / 25);
-            activityChart.update();
-        }
-        
-        // Update goal progress
-        const stepsGoalElement = document.querySelector('.goal-item:nth-child(1) .goal-stats span:first-child');
-        if (stepsGoalElement && data.steps) {
-            const stepsGoal = 10000; // Default goal
-            const percentage = Math.min(Math.round((data.steps / stepsGoal) * 100), 100);
-            
-            stepsGoalElement.textContent = `${data.steps.toLocaleString()} / ${stepsGoal.toLocaleString()} steps`;
-            
-            // Update progress bar
-            const progressBar = document.querySelector('.goal-item:nth-child(1) .progress-fill');
-            if (progressBar) {
-                progressBar.style.width = `${percentage}%`;
-            }
-            
-            // Update percentage text
-            const percentText = document.querySelector('.goal-item:nth-child(1) .goal-stats span:last-child');
-            if (percentText) {
-                percentText.textContent = `${percentage}%`;
-            }
-        }
     }
 
     // ===== HEALTH DATA =====
@@ -689,388 +953,326 @@ document.addEventListener('DOMContentLoaded', function() {
     };
 
     // ===== INITIALIZE CHARTS =====
-    
-    // Body Composition Chart
-    const bodyCompositionChartEl = document.getElementById('bodyCompositionChart');
-    let bodyCompositionChart;
-    
-    if (bodyCompositionChartEl) {
-        const ctx = bodyCompositionChartEl.getContext('2d');
+    // Initialize all charts once at the beginning
+    function initializeAllCharts() {
+        console.log('[Charts] Initializing all charts');
         
-        bodyCompositionChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Muscle', 'Fat', 'Bone', 'Water'],
-                datasets: [{
-                    data: [
-                        healthData.bodyComposition.muscle,
-                        healthData.bodyComposition.fat,
-                        healthData.bodyComposition.bone,
-                        healthData.bodyComposition.water
-                    ],
-                    backgroundColor: [
-                        getComputedStyle(document.documentElement).getPropertyValue('--primary-dark'),
-                        getComputedStyle(document.documentElement).getPropertyValue('--secondary'),
-                        getComputedStyle(document.documentElement).getPropertyValue('--accent'),
-                        getComputedStyle(document.documentElement).getPropertyValue('--info')
-                    ],
-                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                    borderWidth: 2,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: {
-                            usePointStyle: true,
-                            padding: 10,
-                            font: {
-                                family: "'Poppins', sans-serif",
-                                size: 11
-                            }
+        // Activity Chart
+        const activityChartEl = document.getElementById('activityChart');
+        if (activityChartEl) {
+            const ctx = activityChartEl.getContext('2d');
+            
+            window.activityChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [
+                        {
+                            label: 'Steps',
+                            data: [8542, 9321, 10458, 8241, 9876, 7542, 11245],
+                            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--steps-color') || '#88d8b0',
+                            borderWidth: 0,
+                            borderRadius: 4,
+                            order: 1
+                        },
+                        {
+                            label: 'Active Minutes',
+                            data: [45, 52, 58, 47, 48, 40, 62],
+                            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--active-mins-color') || '#7cd5fa',
+                            borderWidth: 0,
+                            borderRadius: 4,
+                            order: 2
+                        },
+                        {
+                            label: 'Calories',
+                            data: [1890/25, 1950/25, 2050/25, 1876/25, 1920/25, 1760/25, 2080/25],
+                            backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--calories-color') || '#ff8a8a',
+                            borderWidth: 0,
+                            borderRadius: 4,
+                            order: 3
                         }
-                    },
-                    tooltip: {
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--dark'),
-                        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--muted'),
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border'),
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(context) {
-                                return ` ${context.label}: ${context.raw}%`;
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    // Activity Chart
-    const activityChartEl = document.getElementById('activityChart');
-    let activityChart;
-    
-    if (activityChartEl) {
-        const ctx = activityChartEl.getContext('2d');
-        
-        activityChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: healthData.activityData.days,
-                datasets: [
-                    {
-                        label: 'Steps',
-                        data: healthData.activityData.steps,
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--steps'),
-                        backgroundColor: 'transparent',
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--steps'),
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    },
-                    {
-                        label: 'Active Minutes',
-                        data: healthData.activityData.activeMinutes,
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--active-mins'),
-                        backgroundColor: 'transparent',
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--active-mins'),
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    },
-                    {
-                        label: 'Calories',
-                        data: healthData.activityData.calories.map(cal => cal / 25), // Scale down to fit on the same chart
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--calories'),
-                        backgroundColor: 'transparent',
-                        tension: 0.4,
-                        borderWidth: 3,
-                        pointBackgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--calories'),
-                        pointRadius: 4,
-                        pointHoverRadius: 6
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                interaction: {
-                    mode: 'index',
-                    intersect: false
+                    ]
                 },
-                plugins: {
-                    legend: {
-                        display: false
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw;
+                                    
+                                    if (label === 'Steps') {
+                                        return ` Steps: ${Math.round(value).toLocaleString()}`;
+                                    } else if (label === 'Active Minutes') {
+                                        return ` Active Minutes: ${Math.round(value)} min`;
+                                    } else if (label === 'Calories') {
+                                        // Multiply back to get actual calories
+                                        return ` Calories: ${Math.round(value * 25)} cal`;
+                                    }
+                                    return ` ${label}: ${value}`;
+                                }
+                            }
+                        }
                     },
-                    tooltip: {
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--dark'),
-                        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--muted'),
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border'),
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(context) {
-                                const label = context.dataset.label;
-                                const value = context.raw;
-                                
-                                if (label === 'Calories') {
-                                    return ` ${label}: ${value * 25} kcal`;
-                                } else if (label === 'Steps') {
-                                    return ` ${label}: ${value} steps`;
-                                } else {
-                                    return ` ${label}: ${value} min`;
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                borderDash: [2, 2]
+                            },
+                            ticks: {
+                                callback: function(value, index, values) {
+                                    // Show only some ticks to avoid crowding
+                                    return value % 50 === 0 ? value : '';
                                 }
                             }
                         }
                     }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grace: '10%',
-                        grid: {
-                            borderDash: [2, 2]
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                if (value === 0) return '0';
-                                if (value === 100) return '10K steps';
-                                if (value === 60) return '60 min';
-                                return '';
-                            }
-                        }
-                    }
                 }
-            }
-        });
-        
-        // Period selector buttons
-        const periodBtns = document.querySelectorAll('.activity-stats .card-actions .btn-sm');
-        
-        periodBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                // Remove active class from all buttons
-                periodBtns.forEach(b => b.classList.remove('active'));
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                // Future enhancement: Update chart data based on selected period
-                // For now, we'll just show the same data
             });
-        });
-    }
-
-    // Heart Rate Chart
-    const heartRateChartEl = document.getElementById('heartRateChart');
-    let heartRateChart;
-    
-    if (heartRateChartEl) {
-        const ctx = heartRateChartEl.getContext('2d');
+            console.log('[Charts] Activity chart initialized', window.activityChart);
+        }
         
-        heartRateChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: healthData.heartRateData.hours.map(hour => `${hour}:00`),
-                datasets: [
-                    {
+        // Heart Rate Chart
+        const heartRateChartEl = document.getElementById('heartRateChart');
+        if (heartRateChartEl) {
+            const ctx = heartRateChartEl.getContext('2d');
+            
+            window.heartRateChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['-10 min', '-9 min', '-8 min', '-7 min', '-6 min', '-5 min', '-4 min', '-3 min', '-2 min', '-1 min'],
+                    datasets: [{
                         label: 'Heart Rate',
-                        data: healthData.heartRateData.values,
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--danger'),
-                        backgroundColor: 'rgba(255, 138, 138, 0.1)',
-                        fill: true,
-                        tension: 0.4,
+                        data: [62, 64, 68, 70, 74, 78, 72, 68, 66, 64],
+                        borderColor: '#ff6b6b',
+                        backgroundColor: 'rgba(255, 107, 107, 0.1)',
                         borderWidth: 2,
-                        pointRadius: 0,
-                        pointHoverRadius: 4
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#ff6b6b',
+                        pointBorderColor: '#fff',
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` Heart Rate: ${context.raw} bpm`;
+                                }
+                            }
+                        }
                     },
-                    tooltip: {
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--dark'),
-                        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--muted'),
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border'),
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(context) {
-                                return ` Heart Rate: ${context.raw} bpm`;
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            beginAtZero: false,
+                            min: 50,
+                            max: 100,
+                            grid: {
+                                borderDash: [2, 2]
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return `${value} bpm`;
+                                }
                             }
                         }
                     }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        },
-                        ticks: {
-                            maxRotation: 0,
-                            autoSkip: true,
-                            maxTicksLimit: 8
-                        }
-                    },
-                    y: {
-                        suggestedMin: 50,
-                        suggestedMax: 160,
-                        grid: {
-                            borderDash: [2, 2]
-                        }
-                    }
                 }
-            }
-        });
-    }
-
-    // Sleep Chart
-    const sleepChartEl = document.getElementById('sleepChart');
-    let sleepChart;
-    
-    if (sleepChartEl) {
-        const ctx = sleepChartEl.getContext('2d');
+            });
+            console.log('[Charts] Heart rate chart initialized', window.heartRateChart);
+        }
         
-        // Calculate percentage of each sleep stage
-        const totalSleepMinutes = Object.values(healthData.sleepData.stages).reduce((a, b) => a + b, 0);
-        const sleepStages = [
-            (healthData.sleepData.stages.deep / totalSleepMinutes) * 100,
-            (healthData.sleepData.stages.light / totalSleepMinutes) * 100,
-            (healthData.sleepData.stages.rem / totalSleepMinutes) * 100,
-            (healthData.sleepData.stages.awake / totalSleepMinutes) * 100
-        ];
-        
-        sleepChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: healthData.sleepData.days,
-                datasets: [
-                    {
+        // Sleep Chart
+        const sleepChartEl = document.getElementById('sleepChart');
+        if (sleepChartEl) {
+            const ctx = sleepChartEl.getContext('2d');
+            
+            window.sleepChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                    datasets: [{
                         label: 'Sleep Duration',
-                        data: healthData.sleepData.hours,
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--sleep'),
-                        borderRadius: 6,
-                        barThickness: 12
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                    tooltip: {
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--dark'),
-                        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--muted'),
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border'),
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(context) {
-                                const hours = Math.floor(context.raw);
-                                const minutes = Math.round((context.raw - hours) * 60);
-                                return ` Sleep Duration: ${hours}h ${minutes}m`;
-                            }
-                        }
-                    }
+                        data: [6.8, 7.2, 6.9, 7.25, 8.1, 7.9, 6.5],
+                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--primary') || '#69d1b0',
+                        borderWidth: 0,
+                        borderRadius: 4
+                    }]
                 },
-                scales: {
-                    x: {
-                        grid: {
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
                             display: false
-                        }
-                    },
-                    y: {
-                        suggestedMin: 0,
-                        suggestedMax: 10,
-                        grid: {
-                            borderDash: [2, 2]
                         },
-                        ticks: {
-                            callback: function(value) {
-                                return `${value}h`;
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const hours = Math.floor(context.raw);
+                                    const minutes = Math.round((context.raw - hours) * 60);
+                                    return ` Sleep Duration: ${hours}h ${minutes}m`;
+                                }
                             }
                         }
-                    }
-                }
-            }
-        });
-    }
-
-    // Macros Chart (Nutrition)
-    const macrosChartEl = document.getElementById('macrosChart');
-    let macrosChart;
-    
-    if (macrosChartEl) {
-        const ctx = macrosChartEl.getContext('2d');
-        
-        // Calculate percentage of each macro
-        const totalMacros = Object.values(healthData.nutritionData.macros).reduce((a, b) => a + b, 0);
-        
-        macrosChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Protein', 'Carbs', 'Fats'],
-                datasets: [{
-                    data: [
-                        healthData.nutritionData.macros.protein,
-                        healthData.nutritionData.macros.carbs,
-                        healthData.nutritionData.macros.fats
-                    ],
-                    backgroundColor: [
-                        getComputedStyle(document.documentElement).getPropertyValue('--protein'),
-                        getComputedStyle(document.documentElement).getPropertyValue('--carbs'),
-                        getComputedStyle(document.documentElement).getPropertyValue('--fats')
-                    ],
-                    borderColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                    borderWidth: 2,
-                    hoverOffset: 10
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                cutout: '70%',
-                plugins: {
-                    legend: {
-                        display: false
                     },
-                    tooltip: {
-                        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--card-bg'),
-                        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--dark'),
-                        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--muted'),
-                        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--border'),
-                        borderWidth: 1,
-                        callbacks: {
-                            label: function(context) {
-                                const value = context.raw;
-                                const percentage = Math.round((value / totalMacros) * 100);
-                                return ` ${context.label}: ${value}g (${percentage}%)`;
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            grid: {
+                                borderDash: [2, 2]
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return `${value}h`;
+                                }
                             }
                         }
                     }
                 }
-            }
-        });
+            });
+        }
+        
+        // Body Composition Chart
+        const bodyCompositionChartEl = document.getElementById('bodyCompositionChart');
+        if (bodyCompositionChartEl) {
+            const ctx = bodyCompositionChartEl.getContext('2d');
+            
+            window.bodyCompositionChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Muscle', 'Fat', 'Water', 'Other'],
+                    datasets: [{
+                        data: [36, 18.2, 40, 5.8],
+                        backgroundColor: [
+                            '#4a6fa5',
+                            '#ff8a8a',
+                            '#82c4fa',
+                            '#ddd'
+                        ],
+                        borderWidth: 0,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 15,
+                                usePointStyle: true,
+                                pointStyle: 'circle'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` ${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Macros Chart (Nutrition)
+        const macrosChartEl = document.getElementById('macrosChart');
+        if (macrosChartEl) {
+            const ctx = macrosChartEl.getContext('2d');
+            
+            // Calculate total for percentage
+            const proteinGrams = 96;
+            const carbsGrams = 215;
+            const fatsGrams = 64;
+            const totalMacros = proteinGrams + carbsGrams + fatsGrams;
+            
+            // Use getPropertyValue or fallback to default colors
+            const getColor = (varName, fallback) => {
+                let color = getComputedStyle(document.documentElement).getPropertyValue(varName);
+                return color ? color.trim() : fallback;
+            };
+            
+            window.macrosChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Protein', 'Carbs', 'Fats'],
+                    datasets: [{
+                        data: [
+                            proteinGrams,
+                            carbsGrams,
+                            fatsGrams
+                        ],
+                        backgroundColor: [
+                            getColor('--protein', '#4a6fa5'),
+                            getColor('--carbs', '#88d8b0'),
+                            getColor('--fats', '#ff8a8a')
+                        ],
+                        borderColor: getColor('--card-bg', 'white'),
+                        borderWidth: 2,
+                        hoverOffset: 10
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: getColor('--card-bg', 'white'),
+                            titleColor: getColor('--text', '#333'),
+                            bodyColor: getColor('--muted', '#666'),
+                            borderColor: getColor('--border', '#ccc'),
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    const value = context.raw;
+                                    const percentage = Math.round((value / totalMacros) * 100);
+                                    return ` ${context.label}: ${value}g (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     // ===== WATER INTAKE TRACKING =====

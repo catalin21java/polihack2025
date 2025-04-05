@@ -3,14 +3,95 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Timișoara Local Rewards</title>
+  <title>Local Rewards in Timișoara</title>
+  <link rel="stylesheet" href="style/dashboard.css">
   <link rel="stylesheet" href="style/businessOffers.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div id="offers-container">
-    <h1>Local Rewards in Timișoara</h1>
-    <div id="business-grid"></div>
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar">
+    <div class="sidebar-header">
+      <img src="https://placehold.co/150x40/e9f5db/1b4332?text=EcoMove&font=poppins" alt="EcoMove Logo">
+      <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+    </div>
+    <div class="sidebar-menu">
+      <ul>
+        <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a></li>
+        <li><a href="#"><i class="fas fa-route"></i> <span>My Trips</span></a></li>
+        <li class="active"><a href="#"><i class="fas fa-gift"></i> <span>Rewards</span></a></li>
+        <li><a href="#"><i class="fas fa-heart"></i> <span>Health</span></a></li>
+        <li><a href="#"><i class="fas fa-map-marked-alt"></i> <span>Trip Planner</span></a></li>
+        <li><a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+      </ul>
+    </div>
+    <div class="sidebar-footer">
+      <a href="home.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content">
+<!-- City Switch Dropdown -->
+<div class="city-switch">
+  <label for="citySelect"><i class="fas fa-map-marker-alt"></i> Your City:</label>
+  <select id="citySelect">
+    <option value="cluj.html">Cluj-Napoca</option>
+    <option value="timisoara.html" selected>Timișoara</option>
+  </select>
+</div>
+
+    <!-- Top Navigation -->
+    <header class="top-nav">
+      <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Search...">
+      </div>
+      <div class="nav-actions">
+        <div class="notifications">
+          <button class="icon-btn"><i class="fas fa-bell"></i></button>
+          <span class="badge">3</span>
+        </div>
+        <div class="messages">
+          <button class="icon-btn"><i class="fas fa-envelope"></i></button>
+          <span class="badge">5</span>
+        </div>
+        <div class="user-profile">
+          <img src="https://placehold.co/40x40/e9f5db/1b4332?text=JP&font=poppins" alt="User Profile">
+          <div class="user-info">
+            <p class="user-name">John Packer</p>
+            <p class="user-role">Eco Enthusiast</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Offers Section -->
+    <div id="offers-container">
+      <h1>Local Rewards in Timișoara</h1>
+      <div id="business-grid"></div>
+    </div>
+  </main>
+
+  <!-- Modal for Offers -->
+  <div id="offer-modal">
+    <div class="modal-content">
+      <span id="modal-close">&times;</span>
+      <h2 id="modal-title"></h2>
+      <div id="carousel-wrapper">
+        <div id="modal-offers-carousel"></div>
+      </div>
+    </div>
   </div>
+
   <script type="module" src="src/timisoara.js"></script>
+
+<script>
+  document.getElementById("citySelect").addEventListener("change", function () {
+    window.location.href = this.value;
+  });
+</script>
+
 </body>
 </html>
