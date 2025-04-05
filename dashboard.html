@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMove Dashboard - Track Your Eco Impact</title>
+    <link rel="stylesheet" href="style/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chart.js for data visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://placehold.co/150x40/e9f5db/1b4332?text=EcoMove&font=poppins" alt="EcoMove Logo">
+            <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li class="active">
+                    <a href="#"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-route"></i> <span>My Trips</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-gift"></i> <span>Rewards</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-heart"></i> <span>Health</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-map-marked-alt"></i> <span>Trip Planner</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="home.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation -->
+        <header class="top-nav">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+                    <span class="badge">3</span>
+                </div>
+                <div class="messages">
+                    <button class="icon-btn"><i class="fas fa-envelope"></i></button>
+                    <span class="badge">5</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://placehold.co/40x40/e9f5db/1b4332?text=JP&font=poppins" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Packer</p>
+                        <p class="user-role">Eco Enthusiast</p>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <div class="dashboard">
+            <!-- Welcome Section -->
+            <section class="welcome-section">
+                <div class="welcome-content">
+                    <h1>Welcome back, John!</h1>
+                    <p>Your eco-journey stats for this week:</p>
+                </div>
+                <div class="date-picker">
+                    <button class="icon-btn"><i class="fas fa-calendar-alt"></i></button>
+                    <span>July 3 - July 9, 2023</span>
+                </div>
+            </section>
+
+            <!-- Stats Overview Cards -->
+            <section class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon eco-points">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>1,284</h3>
+                        <p>Eco Points</p>
+                    </div>
+                    <div class="stat-change increase">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>15%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon co2-saved">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>42.8 kg</h3>
+                        <p>CO₂ Saved</p>
+                    </div>
+                    <div class="stat-change increase">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>23%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon distance">
+                        <i class="fas fa-road"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>87.5 km</h3>
+                        <p>Distance Traveled</p>
+                    </div>
+                    <div class="stat-change increase">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon active-days">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>5/7</h3>
+                        <p>Active Days</p>
+                    </div>
+                    <div class="stat-change neutral">
+                        <i class="fas fa-equals"></i>
+                        <span>0%</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Main Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Activity Chart -->
+                <section class="dashboard-card activity-chart">
+                    <div class="card-header">
+                        <h2>Your Activity</h2>
+                        <div class="card-actions">
+                            <button class="btn-sm">Week</button>
+                            <button class="btn-sm active">Month</button>
+                            <button class="btn-sm">Year</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="activityChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- Health Connect -->
+                <section class="dashboard-card health-status">
+                    <div class="card-header">
+                        <h2>Health Status</h2>
+                        <div class="card-actions">
+                            <button class="icon-btn"><i class="fas fa-sync-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="health-metrics">
+                            <div class="health-metric">
+                                <div class="metric-circle" data-value="75">
+                                    <svg width="100" height="100">
+                                        <circle class="bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="progress" cx="50" cy="50" r="40"></circle>
+                                        <text x="50" y="50" text-anchor="middle" dominant-baseline="middle">75%</text>
+                                    </svg>
+                                </div>
+                                <p>Steps Goal</p>
+                                <span>7,500 / 10,000</span>
+                            </div>
+                            <div class="health-metric">
+                                <div class="metric-circle" data-value="82">
+                                    <svg width="100" height="100">
+                                        <circle class="bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="progress" cx="50" cy="50" r="40"></circle>
+                                        <text x="50" y="50" text-anchor="middle" dominant-baseline="middle">82%</text>
+                                    </svg>
+                                </div>
+                                <p>Active Minutes</p>
+                                <span>41 / 50 min</span>
+                            </div>
+                            <div class="health-metric">
+                                <div class="metric-circle" data-value="95">
+                                    <svg width="100" height="100">
+                                        <circle class="bg" cx="50" cy="50" r="40"></circle>
+                                        <circle class="progress" cx="50" cy="50" r="40"></circle>
+                                        <text x="50" y="50" text-anchor="middle" dominant-baseline="middle">95%</text>
+                                    </svg>
+                                </div>
+                                <p>Calories Burned</p>
+                                <span>285 / 300 cal</span>
+                            </div>
+                        </div>
+                        <div class="connect-health-btn">
+                            <button class="btn btn-primary">Connect Health App</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Rewards -->
+                <section class="dashboard-card rewards-section">
+                    <div class="card-header">
+                        <h2>Available Rewards</h2>
+                        <div class="card-actions">
+                            <a href="#" class="view-all">View All</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="rewards-list">
+                            <div class="reward-item">
+                                <div class="reward-img">
+                                    <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Coffee&font=poppins" alt="Coffee">
+                                    <span class="reward-points">150 pts</span>
+                                </div>
+                                <div class="reward-info">
+                                    <h4>Free Coffee</h4>
+                                    <p>Green Bean Cafe</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm">Redeem</button>
+                            </div>
+                            <div class="reward-item">
+                                <div class="reward-img">
+                                    <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Bike&font=poppins" alt="Bike Repair">
+                                    <span class="reward-points">300 pts</span>
+                                </div>
+                                <div class="reward-info">
+                                    <h4>Bike Tune-Up</h4>
+                                    <p>City Cycles</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm">Redeem</button>
+                            </div>
+                            <div class="reward-item">
+                                <div class="reward-img">
+                                    <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Movie&font=poppins" alt="Movie Tickets">
+                                    <span class="reward-points">250 pts</span>
+                                </div>
+                                <div class="reward-info">
+                                    <h4>Movie Tickets</h4>
+                                    <p>Cinema City</p>
+                                </div>
+                                <button class="btn btn-outline btn-sm">Redeem</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Trip Planner -->
+                <section class="dashboard-card trip-planner">
+                    <div class="card-header">
+                        <h2>Trip Planner</h2>
+                        <div class="card-actions">
+                            <button class="btn btn-primary btn-sm">New Trip</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="trip-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="start-location">Start Location</label>
+                                    <input type="text" id="start-location" placeholder="Your current location">
+                                </div>
+                                <div class="form-group">
+                                    <label for="end-location">Destination</label>
+                                    <input type="text" id="end-location" placeholder="Where are you going?">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Transportation Mode</label>
+                                    <div class="transport-options">
+                                        <label class="transport-option">
+                                            <input type="radio" name="transport" value="walking" checked>
+                                            <i class="fas fa-walking"></i>
+                                            <span>Walking</span>
+                                        </label>
+                                        <label class="transport-option">
+                                            <input type="radio" name="transport" value="cycling">
+                                            <i class="fas fa-bicycle"></i>
+                                            <span>Cycling</span>
+                                        </label>
+                                        <label class="transport-option">
+                                            <input type="radio" name="transport" value="public">
+                                            <i class="fas fa-bus"></i>
+                                            <span>Public Transit</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button class="btn btn-primary">Plan Route</button>
+                                <button class="btn btn-outline">Show Alternatives</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Activity Timeline -->
+                <section class="dashboard-card activity-timeline">
+                    <div class="card-header">
+                        <h2>Recent Activity</h2>
+                        <div class="card-actions">
+                            <a href="#" class="view-all">View All</a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-icon walking">
+                                    <i class="fas fa-walking"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Morning Walk</h4>
+                                    <p>3.2 km in 38 minutes</p>
+                                    <span class="timeline-time">Today, 7:35 AM</span>
+                                    <div class="timeline-meta">
+                                        <span><i class="fas fa-fire"></i> 145 cal</span>
+                                        <span><i class="fas fa-star"></i> 30 pts</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon cycling">
+                                    <i class="fas fa-bicycle"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Commute to Work</h4>
+                                    <p>8.7 km in at average speed of 18 km/h</p>
+                                    <span class="timeline-time">Yesterday, 8:20 AM</span>
+                                    <div class="timeline-meta">
+                                        <span><i class="fas fa-fire"></i> 210 cal</span>
+                                        <span><i class="fas fa-star"></i> 50 pts</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-icon public-transport">
+                                    <i class="fas fa-bus"></i>
+                                </div>
+                                <div class="timeline-content">
+                                    <h4>Evening Bus Ride</h4>
+                                    <p>12.5 km journey by public transport</p>
+                                    <span class="timeline-time">Yesterday, 6:10 PM</span>
+                                    <div class="timeline-meta">
+                                        <span><i class="fas fa-leaf"></i> 1.5 kg CO₂ saved</span>
+                                        <span><i class="fas fa-star"></i> 25 pts</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Environmental Impact -->
+                <section class="dashboard-card environmental-impact">
+                    <div class="card-header">
+                        <h2>Your Environmental Impact</h2>
+                        <div class="card-actions">
+                            <button class="icon-btn"><i class="fas fa-share-alt"></i></button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="impact-visualization">
+                            <canvas id="impactChart"></canvas>
+                        </div>
+                        <div class="impact-stats">
+                            <div class="impact-stat">
+                                <i class="fas fa-tree"></i>
+                                <div>
+                                    <h4>15 Trees</h4>
+                                    <p>Equivalent CO₂ absorption</p>
+                                </div>
+                            </div>
+                            <div class="impact-stat">
+                                <i class="fas fa-gas-pump"></i>
+                                <div>
+                                    <h4>83 Liters</h4>
+                                    <p>Fuel saved</p>
+                                </div>
+                            </div>
+                            <div class="impact-stat">
+                                <i class="fas fa-globe-americas"></i>
+                                <div>
+                                    <h4>Top 5%</h4>
+                                    <p>Of eco-friendly users</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Community Leaderboard -->
+                <section class="dashboard-card community-leaderboard">
+                    <div class="card-header">
+                        <h2>Community Leaderboard</h2>
+                        <div class="card-actions">
+                            <select>
+                                <option>Weekly</option>
+                                <option selected>Monthly</option>
+                                <option>All Time</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="leaderboard-list">
+                            <div class="leaderboard-item">
+                                <div class="rank rank-1">1</div>
+                                <div class="user">
+                                    <img src="https://placehold.co/40x40/e9f5db/1b4332?text=SJ&font=poppins" alt="User">
+                                    <div>
+                                        <h4>Sarah Johnson</h4>
+                                        <p>Cycling Enthusiast</p>
+                                    </div>
+                                </div>
+                                <div class="score">
+                                    <span>2,845 pts</span>
+                                </div>
+                            </div>
+                            <div class="leaderboard-item">
+                                <div class="rank rank-2">2</div>
+                                <div class="user">
+                                    <img src="https://placehold.co/40x40/e9f5db/1b4332?text=MT&font=poppins" alt="User">
+                                    <div>
+                                        <h4>Michael Thompson</h4>
+                                        <p>Walking Warrior</p>
+                                    </div>
+                                </div>
+                                <div class="score">
+                                    <span>2,512 pts</span>
+                                </div>
+                            </div>
+                            <div class="leaderboard-item">
+                                <div class="rank rank-3">3</div>
+                                <div class="user">
+                                    <img src="https://placehold.co/40x40/e9f5db/1b4332?text=EL&font=poppins" alt="User">
+                                    <div>
+                                        <h4>Emma Lee</h4>
+                                        <p>Public Transit Pro</p>
+                                    </div>
+                                </div>
+                                <div class="score">
+                                    <span>2,350 pts</span>
+                                </div>
+                            </div>
+                            <div class="leaderboard-item user-rank">
+                                <div class="rank rank-7">7</div>
+                                <div class="user">
+                                    <img src="https://placehold.co/40x40/e9f5db/1b4332?text=JP&font=poppins" alt="User">
+                                    <div>
+                                        <h4>John Packer (You)</h4>
+                                        <p>Eco Enthusiast</p>
+                                    </div>
+                                </div>
+                                <div class="score">
+                                    <span>1,284 pts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="src/dashboard.js"></script>
+</body>
+</html>
