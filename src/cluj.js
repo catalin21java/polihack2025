@@ -60,7 +60,7 @@ const businesses = [
         title: "Free Ethiopia Coffee Pack",
         description: "Get a free coffee pack after walking 3km.",
         points: 170,
-        image: "images/meron_offer1.jpeg"
+        image: "images/meron_coffee_offer1.jpeg"
       }
     ]
   },
@@ -84,7 +84,7 @@ const businesses = [
         title: "Free Smoothie",
         description: "Enjoy a free smoothie with your vegan meal.",
         points: 100,
-        image: "images/samsara_offer1.jpeg"
+        image: "images/samsara_offer3.jpeg"
       },
       {
         title: "15% Off Earth Bowl",
@@ -187,5 +187,7 @@ businesses.forEach(biz => {
 
 modalClose.addEventListener("click", () => {
   modal.classList.remove("show"); // 🔁 Changed from add("hidden")
+  
 });
+window.businesses = businesses;
 

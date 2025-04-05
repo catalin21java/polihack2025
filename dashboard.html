@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <!-- Chart.js for data visualization -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module" src="src/dashboard.js"></script>
+
 </head>
 <body>
     <!-- Sidebar Navigation -->
@@ -218,93 +220,47 @@
                     </div>
                     <div class="card-body">
                         <div class="rewards-list">
-                            <div class="reward-item">
-                                <div class="reward-img">
-                                    <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Coffee&font=poppins" alt="Coffee">
-                                    <span class="reward-points">150 pts</span>
-                                </div>
-                                <div class="reward-info">
-                                    <h4>Free Coffee</h4>
-                                    <p>Green Bean Cafe</p>
-                                </div>
-                                <button class="btn btn-outline btn-sm">Redeem</button>
-                            </div>
-                            <div class="reward-item">
-                                <div class="reward-img">
-                                    <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Bike&font=poppins" alt="Bike Repair">
-                                    <span class="reward-points">300 pts</span>
-                                </div>
-                                <div class="reward-info">
-                                    <h4>Bike Tune-Up</h4>
-                                    <p>City Cycles</p>
-                                </div>
-                                <button class="btn btn-outline btn-sm">Redeem</button>
-                            </div>
-                            <div class="reward-item">
-                                <div class="reward-img">
-                                    <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Movie&font=poppins" alt="Movie Tickets">
-                                    <span class="reward-points">250 pts</span>
-                                </div>
-                                <div class="reward-info">
-                                    <h4>Movie Tickets</h4>
-                                    <p>Cinema City</p>
-                                </div>
-                                <button class="btn btn-outline btn-sm">Redeem</button>
-                            </div>
+                            
+                        
                         </div>
                     </div>
                 </section>
 
-                <!-- Trip Planner -->
-                <section class="dashboard-card trip-planner">
+                <!-- challenges Planner -->
+                <section class="dashboard-card challenges-section">
                     <div class="card-header">
-                        <h2>Trip Planner</h2>
-                        <div class="card-actions">
-                            <button class="btn btn-primary btn-sm">New Trip</button>
-                        </div>
+                        <h2>Challenges for Points</h2>
                     </div>
                     <div class="card-body">
-                        <div class="trip-form">
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label for="start-location">Start Location</label>
-                                    <input type="text" id="start-location" placeholder="Your current location">
-                                </div>
-                                <div class="form-group">
-                                    <label for="end-location">Destination</label>
-                                    <input type="text" id="end-location" placeholder="Where are you going?">
+                        <div class="challenges-carousel">
+                            <div class="challenge-card">
+                                <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Run&font=poppins" alt="Running">
+                                <div class="challenge-info">
+                                    <h4>5K Run</h4>
+                                    <p>Complete a 5K run and earn</p>
+                                    <span class="points">+120 pts</span>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>Transportation Mode</label>
-                                    <div class="transport-options">
-                                        <label class="transport-option">
-                                            <input type="radio" name="transport" value="walking" checked>
-                                            <i class="fas fa-walking"></i>
-                                            <span>Walking</span>
-                                        </label>
-                                        <label class="transport-option">
-                                            <input type="radio" name="transport" value="cycling">
-                                            <i class="fas fa-bicycle"></i>
-                                            <span>Cycling</span>
-                                        </label>
-                                        <label class="transport-option">
-                                            <input type="radio" name="transport" value="public">
-                                            <i class="fas fa-bus"></i>
-                                            <span>Public Transit</span>
-                                        </label>
-                                    </div>
+                            <div class="challenge-card">
+                                <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Hike&font=poppins" alt="Hiking">
+                                <div class="challenge-info">
+                                    <h4>Nature Hike</h4>
+                                    <p>Hike 8 km in one session</p>
+                                    <span class="points">+150 pts</span>
                                 </div>
                             </div>
-                            <div class="form-actions">
-                                <button class="btn btn-primary">Plan Route</button>
-                                <button class="btn btn-outline">Show Alternatives</button>
+                            <div class="challenge-card">
+                                <img src="https://placehold.co/80x80/e9f5db/1b4332?text=Steps&font=poppins" alt="Steps">
+                                <div class="challenge-info">
+                                    <h4>10,000 Steps</h4>
+                                    <p>Reach your step goal daily</p>
+                                    <span class="points">+75 pts</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
-
+                
                 <!-- Activity Timeline -->
                 <section class="dashboard-card activity-timeline">
                     <div class="card-header">

@@ -685,62 +685,68 @@ input, select, textarea {
 .rewards-section {
     grid-column: span 4;
 }
-
 .rewards-list {
     display: flex;
-    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    scrollbar-width: thin;
 }
 
 .reward-item {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-md);
+    flex: 0 0 auto;
+    width: 160px;
+    background-color: var(--background);
     padding: var(--spacing-sm);
     border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
     transition: var(--transition-fast);
 }
 
 .reward-item:hover {
-    background-color: var(--background);
+    background-color: var(--card-bg);
 }
-
 .reward-img {
-    position: relative;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
 }
 
 .reward-img img {
-    width: 60px;
-    height: 60px;
-    border-radius: var(--border-radius-md);
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    display: block;
 }
 
-.reward-points {
-    position: absolute;
-    bottom: -8px;
-    right: -8px;
-    background-color: var(--secondary);
-    color: var(--card-bg);
-    font-size: 0.7rem;
-    font-weight: 600;
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--border-radius-sm);
-}
-
-.reward-info {
-    flex-grow: 1;
-}
 
 .reward-info h4 {
-    margin-bottom: 0;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
+    text-align: center;
 }
 
 .reward-info p {
-    color: var(--muted);
-    font-size: 0.85rem;
-    margin-bottom: 0;
+    font-size: 0.75rem;
+    text-align: center;
+}
+
+.rewards-list::-webkit-scrollbar {
+    height: 6px;
+}
+.rewards-list::-webkit-scrollbar-thumb {
+    background-color: var(--primary-dark);
+    border-radius: 10px;
 }
 
 /* Trip Planner */
@@ -1051,6 +1057,62 @@ input, select, textarea {
     font-weight: 600;
     font-size: 0.9rem;
     color: var(--dark);
+}
+.challenges-section {
+    grid-column: span 4; /* or even span 12 if you want full width */
+}
+
+.challenges-carousel {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: var(--spacing-md);
+    padding-bottom: var(--spacing-sm);
+    scrollbar-width: none; /* For Firefox */
+}
+
+.challenges-carousel::-webkit-scrollbar {
+    display: none; /* For Chrome */
+}
+
+.challenge-card {
+    flex: 0 0 auto;
+    width: 180px;
+    background-color: var(--background);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    padding: var(--spacing-md);
+    scroll-snap-align: start;
+    text-align: center;
+    transition: transform var(--transition-fast);
+}
+
+.challenge-card:hover {
+    transform: translateY(-5px);
+}
+
+.challenge-card img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-sm);
+}
+
+.challenge-info h4 {
+    font-size: 1rem;
+    margin-bottom: var(--spacing-xs);
+}
+
+.challenge-info p {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: var(--spacing-xs);
+}
+
+.challenge-info .points {
+    font-weight: bold;
+    color: var(--primary-dark);
 }
 
 /* ===== RESPONSIVE STYLES ===== */

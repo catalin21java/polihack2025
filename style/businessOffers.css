@@ -1,60 +1,68 @@
-/* ==== MAIN LAYOUT ==== */
+/* ==== OFFERS LAYOUT MATCHING DASHBOARD ==== */
 #offers-container {
   padding: 40px;
-  background-color: #f5f5f5;
-  text-align: center;
+  background-color: #f9fefb;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: 'Poppins', sans-serif;
 }
 
+#offers-container h1 {
+  text-align: center;
+  font-size: 28px;
+  color: #1b4332;
+  margin-bottom: 30px;
+}
+
+/* Grid for business cards */
 #business-grid {
-  column-count: 3;
-  column-gap: 1.5em;
-  padding: 20px;
-  max-width: 1100px;
-  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  padding: 10px;
 }
 
 .business-card {
-  display: inline-block;
-  width: 100%;
-  background-color: white;
-  border-radius: 12px;
-  margin: 0 0 1.5em;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
   padding: 20px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  text-align: center;
+  transition: transform 0.2s ease;
   cursor: pointer;
-  transition: transform 0.3s ease;
-  break-inside: avoid;
 }
 
 .business-card:hover {
-  transform: scale(1.05);
-}
-
-.business-card .logo {
-  font-size: 48px;
-  margin-bottom: 10px;
+  transform: translateY(-5px);
 }
 
 .logo-img {
   width: 100%;
   height: auto;
-  max-height: 120px;
+  max-height: 100px;
   object-fit: contain;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
 }
 
-/* ==== MODAL ==== */
+.business-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  margin-top: 10px;
+}
+
+/* ==== MODAL STYLING ==== */
 #offer-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 999;
+  z-index: 9999;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -66,55 +74,34 @@
 }
 
 .modal-content {
-  background: white;
-  padding: 30px;
+  background-color: #fff;
   border-radius: 20px;
   width: 90%;
-  max-width: 600px;
-  text-align: center;
+  max-width: 700px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   position: relative;
-  transform: scale(0.9);
-  opacity: 0;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 30px rgba(0,0,0,0.2);
-}
-
-#offer-modal.show .modal-content {
-  transform: scale(1);
-  opacity: 1;
+  text-align: center;
 }
 
 #modal-close {
   position: absolute;
-  top: 15px;
-  right: 20px;
+  top: 20px;
+  right: 25px;
   font-size: 24px;
-  cursor: pointer;
-  border: none;
+  color: #888;
   background: none;
+  border: none;
+  cursor: pointer;
 }
 
-#modal-image {
-  width: 100%;
-  max-height: 200px;
-  object-fit: cover;
-  border-radius: 12px;
-  margin: 20px 0;
-}
-
-.points-requirement {
-  font-size: 16px;
-  margin: 10px 0;
-  color: #555;
-}
-
-/* ==== CAROUSEL ==== */
+/* Carousel container */
 #carousel-wrapper {
   overflow-x: auto;
   scroll-behavior: smooth;
-  padding-bottom: 10px;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
+  padding-bottom: 10px;
+  margin-top: 20px;
 }
 
 #carousel-wrapper::-webkit-scrollbar {
@@ -124,55 +111,64 @@
 #modal-offers-carousel {
   display: flex;
   gap: 20px;
+  padding: 10px 5px;
   min-width: 100%;
 }
 
+/* Individual Offer Box */
 .offer-box {
-  flex: 0 0 300px;
-  border: 1px solid #ddd;
+  background-color: #f9fefb;
   border-radius: 16px;
   padding: 20px;
-  background: #fff;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+  min-width: 280px;
+  flex: 0 0 auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
   text-align: center;
 }
 
 .offer-box img {
   width: 100%;
-  max-height: 200px;
+  height: 160px;
   object-fit: cover;
   border-radius: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
-.redeem-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
+.offer-box h3 {
+  font-size: 18px;
+  color: #1b4332;
+  margin-bottom: 6px;
+}
+
+.offer-box p {
   font-size: 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  color: #444;
+}
+
+.points-requirement {
+  font-size: 14px;
+  color: #6c757d;
   margin-top: 10px;
 }
 
+/* Redeem button */
+.redeem-btn {
+  background-color: #1b4332;
+  color: #fff;
+  padding: 10px 18px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
 .redeem-btn:hover {
-  background-color: #0056b3;
+  background-color: #14532d;
 }
 
 /* ==== RESPONSIVE ==== */
-@media (max-width: 1024px) {
-  #business-grid {
-    column-count: 2;
-  }
-}
-
-@media (max-width: 600px) {
-  #business-grid {
-    column-count: 1;
-  }
-}
-
 @media (max-width: 768px) {
   .modal-content {
     width: 95%;
@@ -180,6 +176,10 @@
   }
 
   .offer-box {
-    flex: 0 0 85vw;
+    min-width: 85vw;
+  }
+
+  #offers-container h1 {
+    font-size: 22px;
   }
 }
