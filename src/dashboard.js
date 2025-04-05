@@ -547,38 +547,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // ===== REWARDS FUNCTIONALITY =====
-    const redeemButtons = document.querySelectorAll('.reward-item .btn');
-    
-    if (redeemButtons) {
-        redeemButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                const rewardItem = this.closest('.reward-item');
-                const rewardTitle = rewardItem.querySelector('h4').textContent;
-                const pointsText = rewardItem.querySelector('.reward-points').textContent;
-                const pointsRequired = parseInt(pointsText.match(/\d+/)[0]);
-                
-                if (userData.points >= pointsRequired) {
-                    userData.points -= pointsRequired;
-                    
-                    // Update points display
-                    const pointsDisplay = document.querySelector('.stat-card .stat-details h3');
-                    if (pointsDisplay) {
-                        pointsDisplay.textContent = userData.points.toLocaleString();
-                    }
-                    
-                    showNotification(`You've redeemed ${rewardTitle} for ${pointsRequired} points!`, 'success');
-                    
-                    // Update button to show redeemed status
-                    button.textContent = 'Redeemed';
-                    button.disabled = true;
-                    button.classList.remove('btn-outline');
-                    button.classList.add('btn-disabled');
+    // ===== GEOLOCATION-BASED REWARDS REDIRECT =====
+const rewardsNav = [...document.querySelectorAll(".sidebar-menu li a")].find(
+    a => a.textContent.trim().toLowerCase().includes("rewards")
+);
+
+if (rewardsNav) {
+    rewardsNav.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition((position) => {
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                if (lat >= 46.7 && lat <= 46.9 && lon >= 23.5 && lon <= 23.7) {
+                    window.location.href = "cluj.html";
+                } else if (lat >= 45.7 && lat <= 45.8 && lon >= 21.1 && lon <= 21.3) {
+                    window.location.href = "timisoara.html";
                 } else {
-                    showNotification(`You need ${pointsRequired - userData.points} more points to redeem this reward.`, 'error');
+                    alert("No local rewards available in your city yet.");
                 }
+            }, () => {
+                alert("Location permission denied.");
             });
-        });
-    }
+        } else {
+            alert("Geolocation is not supported in your browser.");
+        }
+    });
+}
+
 
     // ===== HEALTH CONNECTION =====
     const connectHealthBtn = document.querySelector('.connect-health-btn .btn');
@@ -850,4 +848,117 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     initializeCircularProgress();
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            let cityScript;
+    
+            if (lat >= 46.7 && lat <= 46.9 && lon >= 23.5 && lon <= 23.7) {
+                cityScript = 'cluj.js';
+            } else if (lat >= 45.7 && lat <= 45.8 && lon >= 21.1 && lon <= 21.3) {
+                cityScript = 'timisoara.js';
+            }
+    
+            if (cityScript) {
+                const script = document.createElement('script');
+                script.src = `./src/${cityScript}`;
+                script.onload = () => {
+                    if (typeof businesses !== 'undefined') {
+                        renderCityRewards(businesses);
+                    }
+                };
+                document.head.appendChild(script);
+            } else {
+                document.querySelector('.rewards-list').innerHTML = '<p>No rewards available in your city yet.</p>';
+            }
+        }, () => {
+            document.querySelector('.rewards-list').innerHTML = '<p>Location access denied. Cannot load local rewards.</p>';
+        });
+    } else {
+        document.querySelector('.rewards-list').innerHTML = '<p>Geolocation is not supported.</p>';
+    }
+    function renderCityRewards(businesses) {
+        const rewardsList = document.querySelector('.rewards-list');
+        rewardsList.innerHTML = '';
+    
+        const affordable = [];
+        const locked = [];
+    
+        businesses.forEach(biz => {
+            biz.offers.forEach(offer => {
+                const offerData = { ...offer, provider: biz.name };
+                if (userData.points >= offer.points) {
+                    affordable.push(offerData);
+                } else {
+                    locked.push(offerData);
+                }
+            });
+        });
+    
+        if (affordable.length > 0) {
+            const title = document.createElement('h4');
+            rewardsList.appendChild(title);
+            affordable.forEach(offer => rewardsList.appendChild(createRewardCard(offer, true)));
+        }
+    
+        if (locked.length > 0) {
+            const title = document.createElement('h4');
+            title.textContent = 'More Rewards (Keep Going!)';
+            title.style.marginTop = '20px';
+            rewardsList.appendChild(title);
+            locked.forEach(offer => {
+                const card = createRewardCard(offer, false);
+                const message = document.createElement('p');
+                message.textContent = `You need ${offer.points - userData.points} more points.`;
+                message.style.fontSize = '0.85rem';
+                message.style.color = '#777';
+                card.querySelector('.reward-info').appendChild(message);
+                rewardsList.appendChild(card);
+            });
+        }
+    
+        // Optional: re-add static userData rewards if needed
+        // renderAvailableRewardsFromUserData();
+    }
+    
+    function createRewardCard(reward, canRedeem) {
+        const card = document.createElement('div');
+        card.className = 'reward-item';
+    
+        card.innerHTML = `
+            <img src="${reward.image}" alt="${reward.title}">
+            <div class="reward-info">
+                <h4>${reward.title}</h4>
+                <p class="reward-provider">${reward.provider}</p>
+                <p class="reward-points">${reward.points} points</p>
+            </div>
+            <button class="btn ${canRedeem ? 'btn-outline' : 'btn-disabled'}" ${canRedeem ? '' : 'disabled'}>
+                ${canRedeem ? 'Redeem' : 'Locked'}
+            </button>
+        `;
+    
+        if (canRedeem) {
+            card.querySelector('button').addEventListener('click', function () {
+                if (userData.points >= reward.points) {
+                    userData.points -= reward.points;
+                    this.textContent = 'Redeemed';
+                    this.disabled = true;
+                    this.classList.remove('btn-outline');
+                    this.classList.add('btn-disabled');
+    
+                    const pointsDisplay = document.querySelector('.stat-card .stat-details h3');
+                    if (pointsDisplay) {
+                        pointsDisplay.textContent = userData.points.toLocaleString();
+                    }
+    
+                    showNotification(`You've redeemed ${reward.title} for ${reward.points} points!`, 'success');
+                }
+            });
+        }
+    
+        return card;
+    }
+    
+    
 });
