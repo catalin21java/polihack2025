@@ -1,27 +1,57 @@
 const businesses = [
   {
-    name: "Velotm",
-    description: "15% discount for cyclists stopping by.",
-    logo: "🚲",
-    offer: "15% off accessories"
+    name: "AquaSport",
+    description: "10% off pool access for eco-commuters.",
+    logo: "images/aquasport_tm.png",
+    offer: "10% Off Entry"
   },
   {
-    name: "Timisoara Beans",
-    description: "Free Americano for tram riders!",
-    logo: "☕",
-    offer: "1 Free Americano"
+    name: "BioFresh",
+    description: "Free raw vegan dessert if you walked or biked here.",
+    logo: "images/biofresh_tm.jfif",
+    offer: "Free Dessert"
   },
   {
-    name: "GreenPrint TM",
-    description: "Print sustainably – and save money too!",
-    logo: "🖨️",
-    offer: "15% off sustainable printing"
+    name: "Decathlon",
+    description: "Support eco-movement with discounts on gear.",
+    logo: "images/decathlon_logo.png",
+    offer: "10% Off Gear"
   },
   {
-    name: "Fresh Garden",
-    description: "Eco-travelers get a free lemonade.",
-    logo: "🍋",
-    offer: "Free Lemonade"
+    name: "Gym One",
+    description: "First training free if you used public transport.",
+    logo: "images/gym_one_tm.jfif",
+    offer: "Free Training Session"
+  },
+  {
+    name: "Homemade",
+    description: "Free drink with a plant-based meal if you biked.",
+    logo: "images/homemade_tm.jpg",
+    offer: "Free Drink"
+  },
+  {
+    name: "Meron Coffee",
+    description: "Bring your own cup & show a bus ticket – get a free refill!",
+    logo: "images/meron_coffee.png",
+    offer: "Free Refill"
+  },
+  {
+    name: "Timisoara City Marathon",
+    description: "20% off if you trained green!",
+    logo: "images/timisoaraMaraton.jpg",
+    offer: "20% Off Entry"
+  },
+  {
+    name: "Stația de Cafea",
+    description: "Show your tram ticket and get a free espresso refill.",
+    logo: "images/statiadecafea_tm.png",
+    offer: "Free Espresso Refill"
+  },
+  {
+    name: "UVT Liberty Marathon",
+    description: "Eco-runners get special discounts for registration.",
+    logo: "images/uvt_liberty_tm.png",
+    offer: "15% Off Registration"
   }
 ];
 
@@ -36,7 +66,7 @@ businesses.forEach(biz => {
   const card = document.createElement("div");
   card.className = "business-card";
   card.innerHTML = `
-    <div class="logo">${biz.logo}</div>
+    <img class="logo-img" src="${biz.logo}" alt="${biz.name} Logo">
     <h3>${biz.name}</h3>
   `;
   card.addEventListener("click", () => {

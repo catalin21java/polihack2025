@@ -172,21 +172,21 @@ const cities = [
     info: "Lisbon is the capital and largest city of Portugal. Known for its warm climate, coastal location, colorful buildings, and historic tram networks, Lisbon offers rich culture and scenic beauty.",
     url: "https://en.wikipedia.org/wiki/Lisbon"
   },
-  {
-    name: "Timisoara",
-    lat: 45.760696,
-    lng: 21.226788,
-    info: "Timisoara is a vibrant city in Romania, known for its student life.",
-    url: "timisoara.html"
-  },
+  //{
+  //   name: "Timisoara",
+  //   lat: 45.760696,
+  //   lng: 21.226788,
+  //   info: "Timisoara is a vibrant city in Romania, known for its student life.",
+  //   url: "timisoara.html"
+  // },
 
-  {
-    name: "Cluj-Napoca",
-    lat: 46.770439,
-    lng: 23.591423,
-    info: "Cluj-Napoca is a vibrant city in Romania, known for its Central Park and student life.",
-    url: "cluj.html"
-  },
+  // {
+  //   name: "Cluj-Napoca",
+  //   lat: 46.770439,
+  //   lng: 23.591423,
+  //   info: "Cluj-Napoca is a vibrant city in Romania, known for its Central Park and student life.",
+  //   url: "cluj.html"
+  // },
   
   
   // North and South America - 10 cities
