@@ -177,7 +177,7 @@ const cities = [
     lat: 46.770439,
     lng: 23.591423,
     info: "Cluj-Napoca is a vibrant city in Romania, known for its Central Park and student life.",
-    url: "businessOffersCluj.html"
+    url: "cluj.html"
   },
   
   // North and South America - 10 cities
