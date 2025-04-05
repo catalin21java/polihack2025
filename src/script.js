@@ -172,6 +172,13 @@ const cities = [
     info: "Lisbon is the capital and largest city of Portugal. Known for its warm climate, coastal location, colorful buildings, and historic tram networks, Lisbon offers rich culture and scenic beauty.",
     url: "https://en.wikipedia.org/wiki/Lisbon"
   },
+  {
+    name: "Cluj-Napoca",
+    lat: 46.770439,
+    lng: 23.591423,
+    info: "Cluj-Napoca is a vibrant city in Romania, known for its Central Park and student life.",
+    url: "businessOffersCluj.html"
+  },
   
   // North and South America - 10 cities
   {
