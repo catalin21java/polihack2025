@@ -17,6 +17,18 @@ body {
   background: url('../images/sky-background.jpeg') no-repeat center center;
   background-size: cover;
   position: relative;
+  overflow: hidden;
+}
+
+#hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%);
+  z-index: 1;
 }
 
 .hero-content {
@@ -25,35 +37,125 @@ body {
   max-width: 800px;
   padding: 0 20px;
   z-index: 2;
+  animation: fadeInUp 1.2s ease-out;
 }
 
 .hero-content h1 {
-  font-size: 4rem;
+  font-size: 5rem;
   margin-bottom: 20px;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+  background: linear-gradient(120deg, #ffffff 0%, #e0e0e0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.hero-content h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  animation: sparkle 3s infinite;
 }
 
 .hero-content p {
   font-size: 1.5rem;
   margin-bottom: 30px;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+  opacity: 0.9;
+  animation: fadeInUp 1.4s ease-out;
 }
 
 #explore-btn {
   padding: 15px 30px;
   font-size: 1.2rem;
-  background-color: #000000;
+  background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  border: none;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: all 0.3s;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 1.6s ease-out;
 }
 
 #explore-btn:hover {
-  background-color: #333333;
+  background-color: rgba(0, 0, 0, 0.9);
   transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+#explore-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s;
+}
+
+#explore-btn:hover::before {
+  left: 100%;
+}
+
+/* Animated Arrow Down */
+.arrow-down {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 30px;
+  z-index: 3;
+  cursor: pointer;
+  animation: bounce 2s infinite;
+  border-left: 3px solid white;
+  border-bottom: 3px solid white;
+  transform: translateX(-50%) rotate(-45deg);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0) translateX(-50%) rotate(-45deg);
+  }
+  40% {
+    transform: translateY(-20px) translateX(-50%) rotate(-45deg);
+  }
+  60% {
+    transform: translateY(-10px) translateX(-50%) rotate(-45deg);
+  }
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes sparkle {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%, 100% {
+    transform: translateX(100%);
+  }
 }
 
 /* Globe Section */
@@ -94,7 +196,7 @@ body {
   height: 100%;
   background-color: white;
   color: #333333;
-  padding: 20px;
+  padding: 0;
   overflow-y: auto;
   transition: right 0.3s ease;
   z-index: 100;
@@ -111,37 +213,101 @@ body {
   right: 15px;
   background: none;
   border: none;
-  color: #333333;
+  color: white;
   font-size: 24px;
   cursor: pointer;
+  z-index: 110;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+/* City header with title and country */
+.city-header {
+  background: linear-gradient(135deg, #3498db, #2c3e50);
+  color: white;
+  padding: 25px 20px 15px;
+  text-align: center;
+  position: relative;
 }
 
 #city-title {
-  font-size: 24px;
-  margin-bottom: 10px;
-  padding-right: 30px;
-  color: #222222;
+  font-size: 28px;
+  margin: 0 0 10px;
+  color: white;
+  font-weight: 700;
 }
 
+.country-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 5px;
+}
+
+#country-name {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+#country-flag {
+  width: 24px;
+  height: auto;
+  border-radius: 3px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+}
+
+/* City image */
+.city-image-container {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+}
+
+#city-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+#city-image:hover {
+  transform: scale(1.05);
+}
+
+/* City info */
 #city-info {
-  margin-bottom: 20px;
-  line-height: 1.5;
+  padding: 20px;
+  margin-bottom: 0;
+  line-height: 1.6;
+  font-size: 15px;
+  color: #444;
+  min-height: 100px;
+}
+
+/* Button container */
+.button-container {
+  padding: 0 20px 25px;
+  text-align: center;
+  margin-top: 20px;
 }
 
 #learn-more-btn {
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #000000;
+  padding: 12px 24px;
+  background-color: #3498db;
   color: white;
   text-decoration: none;
   border-radius: 4px;
   border: none;
   cursor: pointer;
   font-size: 16px;
-  transition: background-color 0.2s;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
 #learn-more-btn:hover {
-  background-color: #333333;
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 } 
-
