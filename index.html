@@ -13,6 +13,7 @@
             <p>Discover amazing cities and landmarks across the globe in this interactive 3D experience</p>
             <button id="explore-btn">Start Exploring</button>
         </div>
+        <div class="arrow-down" id="arrow-down"></div>
     </section>
     
     <section id="globe-section">
@@ -20,9 +21,20 @@
         <div id="city-markers-container"></div>
         <div id="city-overlay">
             <button id="overlay-close">&times;</button>
-            <h2 id="city-title">City Name</h2>
+            <div class="city-header">
+                <h2 id="city-title">City Name</h2>
+                <div class="country-info">
+                    <span id="country-name">Country</span>
+                    <img id="country-flag" src="" alt="Country Flag">
+                </div>
+            </div>
+            <div class="city-image-container">
+                <img id="city-image" src="" alt="City Image">
+            </div>
             <div id="city-info">City information will appear here...</div>
-            <button id="learn-more-btn">Find Out More</button>
+            <div class="button-container">
+                <button id="learn-more-btn">Find Out More</button>
+            </div>
         </div>
     </section>
     <script type="module" src="src/script.js"></script>
