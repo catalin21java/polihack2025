@@ -441,56 +441,35 @@ section {
 }
 
 /* ===== APP DOWNLOAD SECTION ===== */
-.app-download {
-    background: linear-gradient(135deg, #f1f9f5 0%, #e3f4ec 100%);
-}
 
-.app-download .container {
+.partners {
+    padding: 60px 0;
+    background-color: #f9fdf9;
+    text-align: center;
+  }
+  
+  .partners-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-xl);
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 30px;
     align-items: center;
-}
-
-.app-content h2 {
-    margin-bottom: var(--spacing-md);
-}
-
-.app-content p {
-    margin-bottom: var(--spacing-lg);
-    color: var(--muted);
-}
-
-.app-buttons {
-    display: flex;
-    gap: var(--spacing-md);
-}
-
-.app-btn {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-sm);
-    background-color: var(--dark);
-    color: var(--card-bg);
-    padding: 0.75rem 1.25rem;
-    border-radius: var(--border-radius-md);
-    transition: var(--transition-normal);
-}
-
-.app-btn:hover {
-    background-color: var(--muted);
-    color: var(--card-bg);
-    transform: translateY(-2px);
-}
-
-.app-btn i {
-    font-size: 1.5rem;
-}
-
-.app-image img {
-    border-radius: var(--border-radius-lg);
-    box-shadow: var(--shadow-lg);
-}
+    justify-items: center;
+    margin-top: 40px;
+  }
+  
+  .partners-grid img {
+    max-width: 100px;
+    height: auto;
+    object-fit: contain;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+  
+  .partners-grid img:hover {
+    filter: none;
+    transform: scale(1.05);
+  }
+  
 
 /* ===== TESTIMONIALS SECTION ===== */
 .testimonials {
