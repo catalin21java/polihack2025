@@ -25,14 +25,13 @@ const businesses = [
         title: "10% Off Gear",
         description: "Discount on climbing shoes for eco-travelers.",
         points: 150,
-        image: ""
+        image: "images/centrala_de_escalada_offer3.jpg"
       },
       {
         title: "Free Entry",
         description: "Redeem a free session with 400 eco points.",
         points: 400,
-        image: ""
-      }
+        image: "images/centrala_de_escalada_offer1.jpg"      }
     ]
   },
   {
@@ -43,13 +42,13 @@ const businesses = [
         title: "Free Dessert",
         description: "Get a free dessert if you walked or biked to the restaurant.",
         points: 120,
-        image: ""
+        image: "images/cimbru_offer1.webp"
       },
       {
         title: "Meal Deal",
         description: "Eco-travelers get 15% off lunch menus.",
         points: 200,
-        image: ""
+        image: "images/cimbru_offer2.jpeg"
       }
     ]
   },
@@ -58,16 +57,10 @@ const businesses = [
     logo: "images/meron_coffee.png",
     offers: [
       {
-        title: "2-for-1 Coffee",
-        description: "Buy 1 coffee, get 1 free with public transport proof.",
-        points: 130,
-        image: ""
-      },
-      {
-        title: "Free Pastry",
-        description: "Get a free pastry after walking 3km.",
+        title: "Free Ethiopia Coffee Pack",
+        description: "Get a free coffee pack after walking 3km.",
         points: 170,
-        image: ""
+        image: "images/meron_offer1.jpeg"
       }
     ]
   },
@@ -76,16 +69,10 @@ const businesses = [
     logo: "images/runners_club_logo.png",
     offers: [
       {
-        title: "10% Off Entry",
-        description: "Get 10% off your next event entry.",
+        title: "10% Off Coffee at LET'S COFFEE",
+        description: "Get 10% off your next coffee.",
         points: 150,
-        image: ""
-      },
-      {
-        title: "Free Training Plan",
-        description: "Unlock an expert plan for free with 200 points.",
-        points: 200,
-        image: ""
+        image: "images/runners_club_offer.jpg"
       }
     ]
   },
@@ -97,13 +84,13 @@ const businesses = [
         title: "Free Smoothie",
         description: "Enjoy a free smoothie with your vegan meal.",
         points: 100,
-        image: ""
+        image: "images/samsara_offer1.jpeg"
       },
       {
         title: "15% Off Earth Bowl",
         description: "Eco-travelers get a healthy discount.",
         points: 160,
-        image: ""
+        image: "images/samsara_offer2.jpeg"
       }
     ]
   },
@@ -115,13 +102,7 @@ const businesses = [
         title: "Free Refill",
         description: "Bring your own cup, walk or bike to claim.",
         points: 80,
-        image: ""
-      },
-      {
-        title: "Eco Espresso Deal",
-        description: "Get an espresso on the house for your steps.",
-        points: 100,
-        image: ""
+        image: "images/teds_offer.jpg"
       }
     ]
   },
@@ -133,13 +114,13 @@ const businesses = [
         title: "20% Off Entry",
         description: "Join the marathon with a green discount.",
         points: 250,
-        image: ""
+        image: "images/wizz_offer1.jpeg"
       },
       {
         title: "VIP Runner Kit",
         description: "Redeem a starter pack with 500 points.",
         points: 500,
-        image: ""
+        image: "images/wizz_offer2.jpeg"
       }
     ]
   },
@@ -151,13 +132,13 @@ const businesses = [
         title: "10% Off Gear",
         description: "Discount on biking and hiking gear.",
         points: 200,
-        image: ""
+        image: "images/decathlon_offer1.jpeg"
       },
       {
         title: "Free Sports Socks",
         description: "Redeem a free pair with 100 points.",
         points: 100,
-        image: ""
+        image: "images/decathlon_offer2.jpg"
       }
     ]
   }

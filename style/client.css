@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+  }
+  
+  #dashboard-container {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  #points-bar {
+    background-color: #e0f3e7;
+    color: #2a5934;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  
+  .card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    text-align: left;
+  }
+  
+  .card h2 {
+    margin-top: 0;
+  }
+  
+  .card.wide {
+    grid-column: span 2;
+  }
+  
+  ul {
+    padding-left: 20px;
+  }
+  
+  ul li {
+    margin-bottom: 8px;
+  }
+  

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoPoints Dashboard</title>
+  <link rel="stylesheet" href="style/client.css">
+</head>
+<body>
+  <div id="dashboard-container">
+    <h1>Welcome back, Lidia!</h1>
+    <div id="points-bar">🌿 EcoPoints: <span id="user-points">430</span></div>
+
+    <div class="dashboard-grid">
+      <div class="card">
+        <h2>👣 Movement Today</h2>
+        <p>Steps: <span id="steps">7,820</span></p>
+        <p>Calories: <span id="calories">340 kcal</span></p>
+      </div>
+
+      <div class="card">
+        <h2>🚌 Public Transport</h2>
+        <p>Rides: <span id="rides">4</span></p>
+        <p>CO₂ Saved: <span id="co2">2.3 kg</span></p>
+      </div>
+
+      <div class="card wide">
+        <h2>📈 Activity Trend</h2>
+        <canvas id="trendChart" width="100%" height="150px"></canvas>
+      </div>
+
+      <div class="card">
+        <h2>🎁 Offers Used</h2>
+        <ul id="used-offers"></ul>
+      </div>
+
+      <div class="card">
+        <h2>🧠 Suggestions</h2>
+        <ul id="suggested-offers"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="src/client.js"></script>
+</body>
+</html>
