@@ -1,18 +1,27 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.131.1';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.131.1/examples/jsm/controls/OrbitControls';
 
-// Add event listener for the explore button
+// Add event listener for the explore button and arrow down
 document.addEventListener('DOMContentLoaded', function() {
     const exploreBtn = document.getElementById('explore-btn');
+    const arrowDown = document.getElementById('arrow-down');
     
-    if (exploreBtn) {
-        exploreBtn.addEventListener('click', function() {
-            // Scroll to the absolute bottom of the page
-            window.scrollTo({
-                top: document.documentElement.scrollHeight,
-                behavior: 'smooth'
-            });
+    // Function to scroll to bottom
+    const scrollToBottom = () => {
+        window.scrollTo({
+            top: document.documentElement.scrollHeight,
+            behavior: 'smooth'
         });
+    };
+    
+    // Add event listener to explore button
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', scrollToBottom);
+    }
+    
+    // Add event listener to arrow down
+    if (arrowDown) {
+        arrowDown.addEventListener('click', scrollToBottom);
     }
 });
 
@@ -67,127 +76,156 @@ const cities = [
   // Existing cities
   {
     name: "New York",
+    country: "United States",
+    countryCode: "us",
     lat: 40.7128,
     lng: -74.0060,
     info: "New York City is the most populous city in the United States. It is known for its iconic skyline, diverse culture, and as a global hub for finance, art, fashion, and entertainment.",
+    image: "https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmV3JTIweW9ya3xlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/New_York_City"
   },
   {
     name: "Tokyo",
+    country: "Japan",
+    countryCode: "jp",
     lat: 35.6762,
     lng: 139.6503,
     info: "Tokyo is the capital and most populous prefecture of Japan. It has the world's largest metropolitan economy and is a global center of technology, finance, and culture.",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dG9reW98ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Tokyo"
   },
   {
     name: "London",
+    country: "United Kingdom",
+    countryCode: "gb",
     lat: 51.5074,
     lng: -0.1278,
     info: "London is the capital and largest city of England and the United Kingdom. It is a leading global city in arts, commerce, education, entertainment, fashion, finance, healthcare, and tourism.",
+    image: "https://images.unsplash.com/photo-1533929736458-ca588d08c8be?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bG9uZG9ufGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/London"
   },
   {
     name: "Paris",
+    country: "France",
+    countryCode: "fr",
     lat: 48.8566,
     lng: 2.3522,
     info: "Paris is the capital and most populous city of France. It is known for its art, cuisine, fashion, and landmarks such as the Eiffel Tower, the Louvre, and Notre-Dame Cathedral.",
+    image: "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cGFyaXN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Paris"
   },
   {
     name: "Sydney",
+    country: "Australia",
+    countryCode: "au",
     lat: -33.8688,
     lng: 151.2093,
     info: "Sydney is the capital city of New South Wales and the most populous city in Australia. It is known for its harbourfront Sydney Opera House, with a distinctive sail-like design, iconic Harbour Bridge, and beautiful beaches.",
+    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8c3lkbmV5fGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Sydney"
   },
   
   // Europe - 10 more cities
   {
     name: "Rome",
+    country: "Italy",
+    countryCode: "it",
     lat: 41.9028,
     lng: 12.4964,
     info: "Rome is the capital city of Italy and a special comune. It is the third most populous city in the European Union. Rome is known for its historic architecture, art, and ancient ruins including the Colosseum and Roman Forum.",
-    url: "https://en.wikipedia.org/wiki/Rome"
+    image: "https://images.unsplash.com/photo-1525874684-10fe8719e047?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9tZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
+    url: "italy.html"
   },
   {
     name: "Berlin",
+    country: "Germany",
+    countryCode: "de",
     lat: 52.5200,
     lng: 13.4050,
     info: "Berlin is the capital and largest city of Germany. Known for its art scene, modern architecture, and historical significance, Berlin played a major role in 20th-century history, particularly during WWII and the Cold War.",
+    image: "https://images.unsplash.com/photo-1560969184-10fe8719e047?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YmVybGlufGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Berlin"
   },
   {
     name: "Madrid",
+    country: "Spain",
+    countryCode: "es",
     lat: 40.4168,
     lng: -3.7038,
     info: "Madrid is the capital and most populous city of Spain. It is known for its elegant boulevards, expansive parks, and rich European art housed in museums like the Prado.",
+    image: "https://images.unsplash.com/photo-1543783207-ec64e4d95325?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bWFkcmlkfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Madrid"
   },
   {
     name: "Amsterdam",
+    country: "Netherlands",
+    countryCode: "nl",
     lat: 52.3676,
     lng: 4.9041,
     info: "Amsterdam is the capital and most populous city of the Netherlands. Known for its artistic heritage, elaborate canal system, and narrow houses, Amsterdam is a cultural hub with famous museums and historic sites.",
+    image: "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YW1zdGVyZGFtfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Amsterdam"
   },
   {
     name: "Athens",
+    country: "Greece",
+    countryCode: "gr",
     lat: 37.9838,
     lng: 23.7275,
     info: "Athens is the capital and largest city of Greece. With a history spanning over 3,400 years, it's considered the cradle of Western civilization and the birthplace of democracy, home to landmarks like the Acropolis.",
+    image: "https://images.unsplash.com/photo-1603565816030-6b389eeb23cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YXRoZW5zfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Athens"
   },
   {
     name: "Vienna",
+    country: "Austria",
+    countryCode: "at",
     lat: 48.2082,
     lng: 16.3738,
     info: "Vienna is the capital and most populous city of Austria. Known for its imperial palaces, classical music heritage, and vibrant cultural scene, Vienna consistently ranks as one of the world's most livable cities.",
+    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dmllbmV8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Vienna"
   },
   {
     name: "Stockholm",
+    country: "Sweden",
+    countryCode: "se",
     lat: 59.3293,
     lng: 18.0686,
     info: "Stockholm is the capital and most populous city of Sweden. Built on 14 islands connected by 57 bridges, Stockholm combines modern architecture with historic buildings across its unique archipelago setting.",
+    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8c3dpbmR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Stockholm"
   },
   {
     name: "Istanbul",
+    country: "Turkey",
+    countryCode: "tr",
     lat: 41.0082,
     lng: 28.9784,
     info: "Istanbul is Turkey's economic, cultural, and historic center. Straddling Europe and Asia across the Bosphorus Strait, this transcontinental city blends ancient history with modern development.",
+    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dG9rZW18ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Istanbul"
   },
   {
     name: "Moscow",
+    country: "Russia",
+    countryCode: "ru",
     lat: 55.7558,
     lng: 37.6173,
     info: "Moscow is the capital and largest city of Russia. Known for its historic buildings like the Kremlin and Red Square, Moscow is a political, economic, and cultural center with a rich artistic tradition.",
+    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bW9zY29tfGVufDB8fDB8fHww&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Moscow"
   },
   {
     name: "Lisbon",
+    country: "Portugal",
+    countryCode: "pt",
     lat: 38.7223,
     lng: -9.1393,
     info: "Lisbon is the capital and largest city of Portugal. Known for its warm climate, coastal location, colorful buildings, and historic tram networks, Lisbon offers rich culture and scenic beauty.",
+    image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8cG90b258ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60",
     url: "https://en.wikipedia.org/wiki/Lisbon"
   },
-  //{
-  //   name: "Timisoara",
-  //   lat: 45.760696,
-  //   lng: 21.226788,
-  //   info: "Timisoara is a vibrant city in Romania, known for its student life.",
-  //   url: "timisoara.html"
-  // },
-
-  // {
-  //   name: "Cluj-Napoca",
-  //   lat: 46.770439,
-  //   lng: 23.591423,
-  //   info: "Cluj-Napoca is a vibrant city in Romania, known for its Central Park and student life.",
-  //   url: "cluj.html"
-  // },
-  
   
   // North and South America - 10 cities
   {
@@ -411,25 +449,127 @@ cities.forEach(city => {
 // City overlay elements
 const cityOverlay = document.getElementById('city-overlay');
 const cityTitle = document.getElementById('city-title');
+const countryName = document.getElementById('country-name');
+const countryFlag = document.getElementById('country-flag');
+const cityImage = document.getElementById('city-image');
 const cityInfo = document.getElementById('city-info');
 const learnMoreBtn = document.getElementById('learn-more-btn');
 const overlayClose = document.getElementById('overlay-close');
 
-// Variables for globe control
-let currentCityUrl = '';
 let isHoveringMarker = false;
 let isOverlayOpen = false;
+let selectedMarkerPosition = null;
+let originalCameraPosition = { x: 0, y: 0, z: 30 };
+let isAnimating = false;
+
+// Function to animate camera zoom
+function animateCamera(targetPosition, duration = 1000, isZoomIn = true) {
+  isAnimating = true;
+  
+  // Save original position if zooming in
+  if (isZoomIn) {
+    originalCameraPosition = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z
+    };
+  }
+  
+  const startPosition = {
+    x: camera.position.x,
+    y: camera.position.y,
+    z: camera.position.z
+  };
+  
+  const startRotation = {
+    x: controls.target.x,
+    y: controls.target.y,
+    z: controls.target.z
+  };
+  
+  // Calculate target rotation (look at marker for zoom in, origin for zoom out)
+  const targetRotation = isZoomIn ? {
+    x: targetPosition.x,
+    y: targetPosition.y,
+    z: targetPosition.z
+  } : { x: 0, y: 0, z: 0 };
+  
+  // For zoom in, calculate a position that's a fixed distance from the Earth's surface
+  let targetZoom;
+  
+  if (isZoomIn) {
+    // Normalize the target position vector (get direction)
+    const direction = new THREE.Vector3(
+      targetPosition.x, 
+      targetPosition.y, 
+      targetPosition.z
+    ).normalize();
+    
+    // Position the camera at a fixed distance from the surface (Earth radius = 10)
+    // Use 20 units from center for a better perspective (10 units further out)
+    // Add a small right offset (3.0 units) to better center the view on the marker
+    targetZoom = {
+      x: direction.x * 20 + direction.z * 3.0,
+      y: direction.y * 20,
+      z: direction.z * 20 - direction.x * 3.0
+    };
+  } else {
+    // When zooming out, use the saved original position
+    targetZoom = {
+      x: originalCameraPosition.x,
+      y: originalCameraPosition.y,
+      z: originalCameraPosition.z
+    };
+  }
+  
+  const startTime = Date.now();
+  
+  function updateCamera() {
+    const elapsed = Date.now() - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    
+    // Easing function for smooth animation
+    const easeProgress = progress < 0.5
+      ? 4 * progress * progress * progress
+      : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+    
+    // Update camera position
+    camera.position.x = startPosition.x + (targetZoom.x - startPosition.x) * easeProgress;
+    camera.position.y = startPosition.y + (targetZoom.y - startPosition.y) * easeProgress;
+    camera.position.z = startPosition.z + (targetZoom.z - startPosition.z) * easeProgress;
+    
+    // Update camera target (what it's looking at)
+    controls.target.x = startRotation.x + (targetRotation.x - startRotation.x) * easeProgress;
+    controls.target.y = startRotation.y + (targetRotation.y - startRotation.y) * easeProgress;
+    controls.target.z = startRotation.z + (targetRotation.z - startRotation.z) * easeProgress;
+    
+    controls.update();
+    
+    if (progress < 1) {
+      requestAnimationFrame(updateCamera);
+    } else {
+      isAnimating = false;
+      
+      // After zooming out is complete, ensure the controls target is completely reset
+      if (!isZoomIn) {
+        controls.target.set(0, 0, 0);
+        controls.update();
+      }
+    }
+  }
+  
+  updateCamera();
+}
 
 // Close overlay and resume rotation
 overlayClose.addEventListener('click', () => {
   cityOverlay.classList.remove('active');
   isOverlayOpen = false;
-});
-
-// Learn more button
-learnMoreBtn.addEventListener('click', () => {
-  if (currentCityUrl) {
-    window.open(currentCityUrl, '_blank');
+  
+  // Zoom out animation
+  if (selectedMarkerPosition) {
+    animateCamera(selectedMarkerPosition, 1000, false);
+    selectedMarkerPosition = null;
   }
 });
 
@@ -460,13 +600,15 @@ document.addEventListener('mousemove', (event) => {
 
 // Handle click events for city selection
 canvas.addEventListener('click', (event) => {
-  // Calculate mouse position in normalized device coordinates
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-  // Update the raycaster
+  if (isAnimating) return; // Don't process clicks during animation
+  
+  // Convert screen coordinates to normalized device coordinates
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  
   raycaster.setFromCamera(mouse, camera);
-
+  
   // Check for intersections with city markers
   const intersects = raycaster.intersectObjects(cityObjects, true);
   
@@ -480,14 +622,32 @@ canvas.addEventListener('click', (event) => {
     if (markerObj && markerObj.userData.city) {
       const selectedCity = markerObj.userData.city;
       
+      // Save marker position for animation
+      selectedMarkerPosition = markerObj.position.clone();
+      
       // Update overlay content
       cityTitle.textContent = selectedCity.name;
+      countryName.textContent = selectedCity.country || '';
+      countryFlag.src = `https://flagcdn.com/w40/${selectedCity.countryCode}.png`;
+      countryFlag.alt = `${selectedCity.country} flag`;
+      
+      if (selectedCity.image) {
+        cityImage.src = selectedCity.image;
+        cityImage.alt = `${selectedCity.name} city view`;
+        cityImage.parentElement.style.display = 'block';
+      } else {
+        cityImage.parentElement.style.display = 'none';
+      }
+      
       cityInfo.textContent = selectedCity.info;
-      currentCityUrl = selectedCity.url;
+      learnMoreBtn.onclick = () => window.open(selectedCity.url, '_blank');
       
       // Show overlay and stop rotation
       cityOverlay.classList.add('active');
       isOverlayOpen = true;
+      
+      // Animate zoom to the selected city
+      animateCamera(selectedMarkerPosition, 1000, true);
     }
   }
 });
