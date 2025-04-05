@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoMove Health - Authorization Complete</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8fffa;
+            color: #494949;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .auth-box {
+            background-color: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            max-width: 500px;
+        }
+        
+        h1 {
+            color: #69d1b0;
+            margin-bottom: 20px;
+        }
+        
+        .error-title {
+            color: #ff8a8a;
+        }
+        
+        p {
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .error-details {
+            background-color: #ffeaea;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            text-align: left;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+        
+        .suggestions {
+            background-color: #f0f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        
+        .suggestions h3 {
+            color: #4a6fa5;
+            margin-top: 0;
+        }
+        
+        .suggestions ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        
+        .spinner {
+            border: 3px solid rgba(168, 230, 207, 0.3);
+            border-radius: 50%;
+            border-top: 3px solid #69d1b0;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="auth-box">
+        <div class="spinner"></div>
+        <h1>Authorization Complete</h1>
+        <p>Google Fit has been successfully connected. You can close this window and return to the EcoMove Health Dashboard.</p>
+    </div>
+    
+    <script>
+        // For debugging
+        console.log('Callback page loaded. Full URL:', window.location.href);
+        
+        // Extract code, state, and error parameters from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const state = urlParams.get('state');
+        const error = urlParams.get('error');
+        const errorDescription = urlParams.get('error_description');
+        
+        console.log('Params:', {
+            code: code ? code.substring(0, 5) + '...' : null,
+            state,
+            error,
+            errorDescription
+        });
+        
+        // Update UI elements
+        const spinnerEl = document.querySelector('.spinner');
+        const titleEl = document.querySelector('h1');
+        const messageEl = document.querySelector('p');
+        
+        // Check if we have an error
+        if (error) {
+            spinnerEl.style.display = 'none';
+            titleEl.textContent = 'Authorization Failed';
+            titleEl.classList.add('error-title');
+            
+            let errorMessage = errorDescription || 'An error occurred during the authorization process.';
+            
+            // Specific error handling
+            if (error === 'access_denied') {
+                errorMessage = 'You have denied access to your Google Fit data. This might be because:';
+                
+                // Create suggestions element
+                const suggestionsEl = document.createElement('div');
+                suggestionsEl.className = 'suggestions';
+                suggestionsEl.innerHTML = `
+                    <h3>Possible solutions:</h3>
+                    <ul>
+                        <li>Make sure you are signed in to the correct Google account</li>
+                        <li>The Google Cloud project may not be verified yet for these scopes</li>
+                        <li>Try connecting again and accept all permissions</li>
+                        <li>If you're the developer, check that the Google Cloud project has the Fitness API enabled</li>
+                    </ul>
+                `;
+                
+                // Update message
+                messageEl.textContent = errorMessage;
+                messageEl.after(suggestionsEl);
+            } else {
+                messageEl.textContent = errorMessage;
+            }
+            
+            // Create and display error details
+            const errorDetails = document.createElement('div');
+            errorDetails.className = 'error-details';
+            errorDetails.textContent = `Error: ${error}\n${errorDescription ? 'Description: ' + errorDescription : ''}`;
+            
+            // Insert after suggestions or message
+            const suggestionsEl = document.querySelector('.suggestions');
+            if (suggestionsEl) {
+                suggestionsEl.after(errorDetails);
+            } else {
+                messageEl.after(errorDetails);
+            }
+            
+            console.error('OAuth error:', error, errorDescription);
+            
+            // Send error message back to opener window
+            if (window.opener) {
+                try {
+                    window.opener.postMessage({
+                        type: 'google_fit_auth',
+                        error: error,
+                        errorDescription: errorDescription
+                    }, window.location.origin);
+                    console.log('Error message sent to opener window');
+                } catch (e) {
+                    console.error('Failed to send message to opener:', e);
+                }
+            } else {
+                console.log('No opener window found');
+            }
+        } else if (code) {
+            // Valid authorization code received
+            console.log('Authorization code received');
+            
+            // Check if the state matches what we stored (security check)
+            const storedState = window.opener ? window.opener.localStorage.getItem('oauthState') : null;
+            
+            if (state !== storedState) {
+                // State mismatch - potential CSRF attack
+                spinnerEl.style.display = 'none';
+                titleEl.textContent = 'Security Error';
+                titleEl.classList.add('error-title');
+                messageEl.textContent = 'Invalid state parameter. This could be a security issue.';
+                console.error('State mismatch: Expected', storedState, 'but got', state);
+            } else {
+                // Send message back to opener window
+                if (window.opener) {
+                    try {
+                        window.opener.postMessage({
+                            type: 'google_fit_auth',
+                            code: code,
+                            state: state
+                        }, window.location.origin);
+                        console.log('Authorization code sent to opener window');
+                        
+                        // Close this window automatically after 3 seconds
+                        setTimeout(() => {
+                            window.close();
+                        }, 3000);
+                    } catch (e) {
+                        spinnerEl.style.display = 'none';
+                        titleEl.textContent = 'Communication Error';
+                        titleEl.classList.add('error-title');
+                        messageEl.textContent = 'Failed to communicate with the main window: ' + e.message;
+                        console.error('Failed to send message to opener:', e);
+                    }
+                } else {
+                    // No opener window
+                    spinnerEl.style.display = 'none';
+                    titleEl.textContent = 'Authorization Complete';
+                    messageEl.textContent = 'Google Fit has been successfully connected, but we couldn\'t communicate with the opener window. Please close this window manually.';
+                    console.log('No opener window found');
+                }
+            }
+        } else {
+            // No code or error - unexpected state
+            spinnerEl.style.display = 'none';
+            titleEl.textContent = 'Authorization Failed';
+            titleEl.classList.add('error-title');
+            messageEl.textContent = 'No authorization code received. Please try again.';
+            console.error('No code or error parameters found in URL');
+        }
+    </script>
+</body>
+</html>

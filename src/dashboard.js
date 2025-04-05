@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Simulated user data
     const userData = {
         name: "John Packer",
-        points: 600,
+        points: 1284,
         co2Saved: 42.8,
         distance: 87.5,
         activeDays: 5,
@@ -138,8 +138,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         ]
     };
-
-    
 
     // ===== INITIALIZE CHARTS =====
     // Activity Chart
@@ -852,154 +850,4 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     
     initializeCircularProgress();
-    // Detect city and load city-specific rewards on dashboard load
-if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-        const lat = position.coords.latitude;
-        const lon = position.coords.longitude;
-        let cityScript;
-
-        if (lat >= 46.7 && lat <= 46.9 && lon >= 23.5 && lon <= 23.7) {
-            cityScript = 'cluj.js';
-        } else if (lat >= 45.7 && lat <= 45.8 && lon >= 21.1 && lon <= 21.3) {
-            cityScript = 'timisoara.js';
-        }
-
-        if (cityScript) {
-            const script = document.createElement('script');
-            script.src = `./src/${cityScript}`;
-            script.onload = () => {
-                if (typeof businesses !== 'undefined') {
-                    renderCityRewards(businesses);
-                }
-            };
-            document.head.appendChild(script);
-        } else {
-            document.querySelector('.rewards-list').innerHTML = '<p>No rewards available in your city yet.</p>';
-        }
-    }, () => {
-        document.querySelector('.rewards-list').innerHTML = '<p>Location access denied. Cannot load local rewards.</p>';
-    });
-} else {
-    document.querySelector('.rewards-list').innerHTML = '<p>Geolocation is not supported.</p>';
-}
-
-
-    // ===== GEOLOCATION-BASED REWARDS REDIRECT =====
-const rewardsNav = [...document.querySelectorAll(".sidebar-menu li a")].find(
-    a => a.textContent.trim().toLowerCase().includes("rewards")
-  );
-  
-  if (rewardsNav) {
-    rewardsNav.addEventListener("click", (e) => {
-      e.preventDefault();
-  
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition((position) => {
-          const lat = position.coords.latitude;
-          const lon = position.coords.longitude;
-  
-          if (lat >= 46.7 && lat <= 46.9 && lon >= 23.5 && lon <= 23.7) {
-            window.location.href = "cluj.html";
-          } else if (lat >= 45.7 && lat <= 45.8 && lon >= 21.1 && lon <= 21.3) {
-            window.location.href = "timisoara.html";
-          } else {
-            alert("No local rewards available in your city yet.");
-          }
-        }, () => {
-          alert("Location permission denied.");
-        });
-      } else {
-        alert("Geolocation is not supported in your browser.");
-      }
-    });
-  }
-  // Render static availableRewards (from userData) below city-based rewards
-function renderCityRewards(businesses) {
-    const rewardsList = document.querySelector('.rewards-list');
-    rewardsList.innerHTML = '';
-
-    const affordable = [];
-    const locked = [];
-
-    businesses.forEach(biz => {
-        biz.offers.forEach(offer => {
-            const offerData = { ...offer, provider: biz.name };
-            if (userData.points >= offer.points) {
-                affordable.push(offerData);
-            } else {
-                locked.push(offerData);
-            }
-        });
-    });
-
-    if (affordable.length > 0) {
-        const title = document.createElement('h4');
-        //title.textContent = 'Rewards You Can Redeem';
-        rewardsList.appendChild(title);
-        affordable.forEach(offer => rewardsList.appendChild(createRewardCard(offer, true)));
-    }
-
-    if (locked.length > 0) {
-        const title = document.createElement('h4');
-        title.textContent = 'More Rewards (Keep Going!)';
-        title.style.marginTop = '20px';
-        rewardsList.appendChild(title);
-        locked.forEach(offer => {
-            const card = createRewardCard(offer, false);
-            const message = document.createElement('p');
-            message.textContent = `You need ${offer.points - userData.points} more points.`;
-            message.style.fontSize = '0.85rem';
-            message.style.color = '#777';
-            card.querySelector('.reward-info').appendChild(message);
-            rewardsList.appendChild(card);
-        });
-    }
-
-    // ⬇️ Restore the static rewards too
-   // renderAvailableRewardsFromUserData();
-}
-
-function createRewardCard(reward, canRedeem) {
-    const card = document.createElement('div');
-    card.className = 'reward-item';
-
-    card.innerHTML = `
-        <img src="${reward.image}" alt="${reward.title}">
-        <div class="reward-info">
-            <h4>${reward.title}</h4>
-            <p class="reward-provider">${reward.provider}</p>
-            <p class="reward-points">${reward.points} points</p>
-        </div>
-        <button class="btn ${canRedeem ? 'btn-outline' : 'btn-disabled'}" ${canRedeem ? '' : 'disabled'}>
-            ${canRedeem ? 'Redeem' : 'Locked'}
-        </button>
-    `;
-
-    // Add event listener if redeemable
-    if (canRedeem) {
-        card.querySelector('button').addEventListener('click', function () {
-            if (userData.points >= reward.points) {
-                userData.points -= reward.points;
-                this.textContent = 'Redeemed';
-                this.disabled = true;
-                this.classList.remove('btn-outline');
-                this.classList.add('btn-disabled');
-
-                // Update points display
-                const pointsDisplay = document.querySelector('.stat-card .stat-details h3');
-                if (pointsDisplay) {
-                    pointsDisplay.textContent = userData.points.toLocaleString();
-                }
-
-                showNotification(`You've redeemed ${reward.title} for ${reward.points} points!`, 'success');
-            }
-        });
-    }
-
-    return card;
-}
-
-
-
 });
