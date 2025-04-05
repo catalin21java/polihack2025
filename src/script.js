@@ -1,11 +1,31 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.131.1';
 import { OrbitControls } from 'https://cdn.skypack.dev/three@0.131.1/examples/jsm/controls/OrbitControls';
 
+// Add event listener for the explore button
+document.addEventListener('DOMContentLoaded', function() {
+    const exploreBtn = document.getElementById('explore-btn');
+    
+    if (exploreBtn) {
+        exploreBtn.addEventListener('click', function() {
+            // Scroll to the absolute bottom of the page
+            window.scrollTo({
+                top: document.documentElement.scrollHeight,
+                behavior: 'smooth'
+            });
+        });
+    }
+});
+
+// Disable mouse wheel scrolling
+document.addEventListener('wheel', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
 // Scene
 const scene = new THREE.Scene();
 
 // Load background texture
-const backgroundTexture = new THREE.TextureLoader().load('sky-background.jpeg');
+const backgroundTexture = new THREE.TextureLoader().load('images/sky-background.jpeg');
 scene.background = backgroundTexture;
 
 // Camera
@@ -30,7 +50,7 @@ setDimentions();
 document.body.appendChild( renderer.domElement );
 
 // Texture, material
-var src0 = 'earth-small.jpg';
+var src0 = 'images/earth-small.jpg';
 
 const texture = new THREE.TextureLoader().load(src0);
 const material = new THREE.MeshBasicMaterial({ map: texture });
