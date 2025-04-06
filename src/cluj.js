@@ -7,7 +7,7 @@ const businesses = [
         title: "Free Workout Pass",
         description: "Free first workout if you biked to the gym.",
         points: 150,
-        image: "images/18_gym_offert1.webp" // ← you’ll add the image filename here later
+        image: "images/18_gym_offert1.webp" // ← you'll add the image filename here later
       },
       {
         title: "10% Off Membership",
@@ -95,7 +95,7 @@ const businesses = [
     ]
   },
   {
-    name: "Ted’s Coffee",
+    name: "Ted's Coffee",
     logo: "images/teds_logo.png",
     offers: [
       {
@@ -154,6 +154,13 @@ const modalImage = document.getElementById("modal-image");
 const modalPoints = document.getElementById("modal-points");
 const modalOffersCarousel = document.getElementById("modal-offers-carousel");
 
+// QR code popup elements
+const qrPopup = document.getElementById("qr-popup");
+const qrClose = document.getElementById("qr-close");
+const qrOfferTitle = document.getElementById("qr-offer-title");
+const qrImage = document.getElementById("qr-image");
+const claimCode = document.getElementById("claim-code");
+
 businesses.forEach(biz => {
   const card = document.createElement("div");
   card.className = "business-card";
@@ -175,6 +182,14 @@ businesses.forEach(biz => {
         <p><strong>Available for:</strong> ${offer.points} EcoPoints</p>
         <button class="redeem-btn">REDEEM</button>
       `;
+      
+      // Add event listener to the redeem button
+      const redeemBtn = offerEl.querySelector(".redeem-btn");
+      redeemBtn.addEventListener("click", (e) => {
+        e.stopPropagation(); // Prevent the modal from closing
+        showQRCode(biz.name, offer.title);
+      });
+      
       modalOffersCarousel.appendChild(offerEl);
     });
   
@@ -185,18 +200,61 @@ businesses.forEach(biz => {
   grid.appendChild(card);
 });
 
+// Function to show QR code popup
+function showQRCode(businessName, offerTitle) {
+  qrOfferTitle.textContent = offerTitle;
+  
+  // Generate a random claim code
+  const randomCode = generateRandomCode();
+  claimCode.textContent = randomCode;
+  
+  // Set QR code image - using a placeholder or generate a real one
+  // For a real implementation, you would generate a QR code with the claim code data
+  // Using a placeholder QR code for now or a free QR code API
+  const qrCodeData = encodeURIComponent(`${businessName} - ${offerTitle} - ${randomCode}`);
+  qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${qrCodeData}`;
+  
+  // Show the QR popup
+  qrPopup.classList.add("show");
+}
+
+// Function to generate a random claim code
+function generateRandomCode() {
+  const characters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; // Removed similar looking characters
+  let result = '';
+  for (let i = 0; i < 8; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}
+
 modalClose.addEventListener("click", () => {
   modal.classList.remove("show"); // 🔁 Changed from add("hidden")
-  
 });
+
+// Close QR popup when clicking the close button
+qrClose.addEventListener("click", () => {
+  qrPopup.classList.remove("show");
+});
+
+// Also close QR popup when clicking outside the content
+qrPopup.addEventListener("click", (e) => {
+  if (e.target === qrPopup) {
+    qrPopup.classList.remove("show");
+  }
+});
+
 document.addEventListener("DOMContentLoaded", () => {
   const dropdownBtn = document.getElementById("dropdownButton");
   const dropdownOptions = document.getElementById("dropdownOptions");
 
-  dropdownBtn.addEventListener("click", () => {
-    dropdownOptions.style.display =
-      dropdownOptions.style.display === "block" ? "none" : "block";
-  });
+  // Add dropdown functionality if elements exist
+  if (dropdownBtn && dropdownOptions) {
+    dropdownBtn.addEventListener("click", () => {
+      dropdownOptions.style.display =
+        dropdownOptions.style.display === "block" ? "none" : "block";
+    });
+  }
 
   // Close dropdown if clicked outside
   document.addEventListener("click", (e) => {
@@ -205,6 +263,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+// Function to handle city change in dropdown
+function handleCityChange() {
+  const dropdown = document.getElementById("cityDropdown");
+  if (dropdown && dropdown.value) {
+    window.location.href = dropdown.value;
+  }
+}
 
 window.businesses = businesses;
 

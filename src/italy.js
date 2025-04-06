@@ -204,7 +204,7 @@ function setupAnimation(model)
 	scene.render();
 	
 	// Increase section duration to make animation longer
-	var sectionDuration = 0.75; // Changed from 0.5 to 0.75
+	var sectionDuration = 1.25; // Changed from 0.75 to 1.25 to make animation last longer
 	
 	// Disable switching to wireframe view by setting view 1 height to 0
 	scene.views[1].height = 0;
@@ -300,7 +300,7 @@ function setupAnimation(model)
 		  scrub: true,
 		  start: "top top",
 		  // Make the animation last longer by extending scroll length
-		  end: "45% bottom", // Changed from 35% to 45%
+		  end: "60% bottom", // Changed from 45% to 60% to require more scrolling
 		  endTrigger: ".content"
 		},
 		defaults: {duration: sectionDuration, ease: 'power2.inOut'}
@@ -311,31 +311,31 @@ function setupAnimation(model)
 	tl.to('.scroll-cta', {duration: 0.1, opacity: 0}, delay)
 	tl.to(vespa.position, {x: -10, ease: 'power1.in'}, delay)
 	
-	delay += sectionDuration * 0.5;
+	delay += sectionDuration * 0.6; // Changed from 0.5 to 0.6 - longer initial position
 	
 	// Simple 180-degree turn
 	tl.to(vespa.rotation, {x: 0, y: tau * 0.5, z: 0, ease: 'power1.inOut'}, delay)
 	tl.to(vespa.position, {x: 0, y: 0, z: -50, ease: 'power1.inOut'}, delay)
 	
-	delay += sectionDuration * 0.7;
+	delay += sectionDuration * 0.9; // Changed from 0.7 to 0.9 - longer rotation time
 	
-	// Begin exit sequence
-	tl.to(vespa.rotation, {x: 0, y: tau * .75, z: -tau * 0.05, ease: 'power1.in'}, delay)
+	// Begin exit sequence - change rotation to face left again (like at start)
+	tl.to(vespa.rotation, {x: 0, y: tau * -.25, z: 0, ease: 'power1.in'}, delay)
 	tl.to(vespa.position, {x: -400, y: 50, z: -20, ease: 'power2.in'}, delay)
 	
 	// Add slower fade-out for the canvas
-	tl.to('canvas', {autoAlpha: 0, duration: sectionDuration * 0.8}, delay + sectionDuration * 0.7)
+	tl.to('canvas', {autoAlpha: 0, duration: sectionDuration * 1.0}, delay + sectionDuration * 0.8) // Longer fade-out
 	
 	// Ensure light moves out too, but more gradually
-	tl.to(scene.light.position, {duration: sectionDuration * 0.5, x: 0, y: 0, z: 0}, delay)
+	tl.to(scene.light.position, {duration: sectionDuration * 0.6, x: 0, y: 0, z: 0}, delay) // Slightly longer light movement
 	
 	// Add an additional script to hide canvas after animation, but delay it a bit
 	gsap.to('canvas', {
 		autoAlpha: 0,
 		scrollTrigger: {
 			trigger: ".ground-container",
-			start: "25% top", // Changed from 20% to 25%
-			end: "40% top",   // Changed from 30% to 40%
+			start: "35% top", // Changed from 25% to 35%
+			end: "55% top",   // Changed from 40% to 55%
 			scrub: true,
 			onLeave: () => {
 				// Force hide the canvas after exiting
