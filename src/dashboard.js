@@ -921,6 +921,8 @@ if (rewardsNav) {
         // Optional: re-add static userData rewards if needed
         // renderAvailableRewardsFromUserData();
     }
+    updateHealthMotivation(userData.healthData);
+
     
     function createRewardCard(reward, canRedeem) {
         const card = document.createElement('div');
@@ -958,6 +960,68 @@ if (rewardsNav) {
         }
     
         return card;
+    }
+    function updateHealthMotivation(data) {
+        const metrics = [
+            {
+                name: "Steps",
+                current: data.steps,
+                goal: data.stepsGoal,
+                message: (left) => `Take ${left} more steps to earn 100 points!`
+            },
+            {
+                name: "Active Minutes",
+                current: data.activeMinutes,
+                goal: data.activeMinutesGoal,
+                message: (left) => `Move for ${left} more minutes to reach your daily activity goal!`
+            },
+            {
+                name: "Calories Burned",
+                current: data.caloriesBurned,
+                goal: data.caloriesBurnedGoal,
+                message: (left) => `Burn ${left} more calories to hit your target!`
+            }
+        ];
+    
+        const healthCardBody = document.querySelector(".health-status .card-body");
+    
+        if (!healthCardBody) return;
+    // Remove loading text if it exists
+const loadingText = healthCardBody.querySelector('p');
+if (loadingText && loadingText.textContent.includes('Loading')) {
+    loadingText.remove();
+}
+
+        // Create a section for motivational tips
+        const tipsSection = document.createElement("div");
+        tipsSection.className = "health-tips";
+        tipsSection.style.marginTop = "20px";
+        tipsSection.innerHTML = `<h4 style="margin-bottom: 10px;">Today’s Eco Goals</h4>`;
+    
+        metrics.forEach(metric => {
+            const left = metric.goal - metric.current;
+            if (left > 0) {
+                const msg = document.createElement("p");
+                msg.style.fontSize = "0.9rem";
+                msg.style.color = "#555";
+                msg.innerHTML = `✅ ${metric.message(left)}`;
+                tipsSection.appendChild(msg);
+            } else {
+                const doneMsg = document.createElement("p");
+                doneMsg.style.fontSize = "0.9rem";
+                doneMsg.style.color = "#69d1b0";
+                doneMsg.innerHTML = `🎉 You've reached your ${metric.name.toLowerCase()} goal today!`;
+                tipsSection.appendChild(doneMsg);
+            }
+        });
+    
+        // Remove existing tips if they exist
+        const existing = healthCardBody.querySelector(".health-tips");
+        if (existing) existing.remove();
+    
+        healthCardBody.appendChild(tipsSection);
+        doneMsg.classList.add("done");
+
     }
     
     
