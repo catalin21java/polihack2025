@@ -70,7 +70,7 @@ class Scene
 			color: 0xffffff, 
 			wireframe: true,
 			transparent: true,
-			opacity: 0.5
+			opacity: 0.5 // Restore original opacity
 		});
 		
 		// Clone the model for wireframe
@@ -203,32 +203,11 @@ function setupAnimation(model)
 	
 	scene.render();
 	
-	var sectionDuration = 1;
-	gsap.fromTo(scene.views[1], 
-		{ 	height: 1, bottom: 0 }, 
-		{
-			height: 0, bottom: 1,
-			ease: 'none',
-			scrollTrigger: {
-			  trigger: ".blueprint",
-			  scrub: true,
-			  start: "bottom bottom",
-			  end: "bottom top"
-			}
-		})
+	// Increase section duration to make animation longer
+	var sectionDuration = 0.75; // Changed from 0.5 to 0.75
 	
-	gsap.fromTo(scene.views[1], 
-		{ 	height: 0, bottom: 0 }, 
-		{
-			height: 1, bottom: 0,
-			ease: 'none',
-			scrollTrigger: {
-			  trigger: ".blueprint",
-			  scrub: true,
-			  start: "top bottom",
-			  end: "top top"
-			}
-		})
+	// Disable switching to wireframe view by setting view 1 height to 0
+	scene.views[1].height = 0;
 	
 	gsap.to('.ground', {
 		y: "30%",
@@ -320,7 +299,8 @@ function setupAnimation(model)
 		  trigger: ".content",
 		  scrub: true,
 		  start: "top top",
-		  end: "bottom bottom",
+		  // Make the animation last longer by extending scroll length
+		  end: "45% bottom", // Changed from 35% to 45%
 		  endTrigger: ".content"
 		},
 		defaults: {duration: sectionDuration, ease: 'power2.inOut'}
@@ -328,61 +308,41 @@ function setupAnimation(model)
 	
 	let delay = 0;
 	
-	tl.to('.scroll-cta', {duration: 0.25, opacity: 0}, delay)
+	tl.to('.scroll-cta', {duration: 0.1, opacity: 0}, delay)
 	tl.to(vespa.position, {x: -10, ease: 'power1.in'}, delay)
 	
-	delay += sectionDuration;
+	delay += sectionDuration * 0.5;
 	
-	// Animations adjusted for Vespa - more realistic movements
-	tl.to(vespa.rotation, {x: tau * .05, y: 0, z: -tau * 0.05, ease: 'power1.inOut'}, delay)
-	tl.to(vespa.position, {x: -40, y: 0, z: -60, ease: 'power1.inOut'}, delay)
+	// Simple 180-degree turn
+	tl.to(vespa.rotation, {x: 0, y: tau * 0.5, z: 0, ease: 'power1.inOut'}, delay)
+	tl.to(vespa.position, {x: 0, y: 0, z: -50, ease: 'power1.inOut'}, delay)
 	
-	delay += sectionDuration;
+	delay += sectionDuration * 0.7;
 	
-	tl.to(vespa.rotation, {x: tau * .05, y: 0,  z: tau * 0.05, ease: 'power3.inOut'}, delay)
-	tl.to(vespa.position, {x: 40, y: 0, z: -60, ease: 'power2.inOut'}, delay)
+	// Begin exit sequence
+	tl.to(vespa.rotation, {x: 0, y: tau * .75, z: -tau * 0.05, ease: 'power1.in'}, delay)
+	tl.to(vespa.position, {x: -400, y: 50, z: -20, ease: 'power2.in'}, delay)
 	
-	delay += sectionDuration;
+	// Add slower fade-out for the canvas
+	tl.to('canvas', {autoAlpha: 0, duration: sectionDuration * 0.8}, delay + sectionDuration * 0.7)
 	
-	// Make the Vespa lean into turns
-	tl.to(vespa.rotation, {x: tau * .05, y: 0, z: -tau * 0.1, ease: 'power3.inOut'}, delay)
-	tl.to(vespa.position, {x: -40, y: 0, z: -30, ease: 'power2.inOut'}, delay)
-	
-	delay += sectionDuration;
-	
-	tl.to(vespa.rotation, { x: 0, z: 0, y: tau * .25}, delay)
-	tl.to(vespa.position, { x: 0, y: -10, z: 50}, delay)
-	
-	delay += sectionDuration;
-	delay += sectionDuration;
-	
-	// Dramatic spins for showcase - keeping size consistent
-	tl.to(vespa.rotation, {x: tau * 0.05, y: tau *.5, z: 0, ease:'power4.inOut'}, delay)
-	tl.to(vespa.position, {z: 30, x: 20, ease:'power4.inOut'}, delay)
-	
-	delay += sectionDuration;
-	
-	tl.to(vespa.rotation, {x: tau * 0.05, y: tau *.5, z: 0, ease:'power4.inOut'}, delay)
-	tl.to(vespa.position, {z: 40, x: 30, ease:'power4.inOut'}, delay)
-	
-	delay += sectionDuration;
-	
-	tl.to(vespa.rotation, {x: tau * 0.05, y: tau *.65, z: tau * 0.05, ease:'power4.inOut'}, delay)
-	tl.to(vespa.position, {z: 0, x: 20, y: 0, ease:'power4.inOut'}, delay)
-	
-	delay += sectionDuration;
-	
-	// Move Vespa to top position before exit, facing left
-	tl.to(vespa.rotation, {x: 0, y: tau * .75, z: 0, ease: 'power1.in'}, delay)
-	tl.to(vespa.position, {z: -20, x: 0, y: 50, ease: 'power1.inOut'}, delay)
-	
-	delay += sectionDuration;
-	
-	// Exit to the left while continuing to face left - FASTER EXIT
-	tl.to(vespa.rotation, {duration: sectionDuration * 0.5, x: 0, y: tau * .75, z: -tau * 0.05, ease: 'power2.in'}, delay)
-	tl.to(vespa.position, {duration: sectionDuration * 0.5, x: -500, y: 50, z: -20, ease: 'power3.in'}, delay)
-	
+	// Ensure light moves out too, but more gradually
 	tl.to(scene.light.position, {duration: sectionDuration * 0.5, x: 0, y: 0, z: 0}, delay)
+	
+	// Add an additional script to hide canvas after animation, but delay it a bit
+	gsap.to('canvas', {
+		autoAlpha: 0,
+		scrollTrigger: {
+			trigger: ".ground-container",
+			start: "25% top", // Changed from 20% to 25%
+			end: "40% top",   // Changed from 30% to 40%
+			scrub: true,
+			onLeave: () => {
+				// Force hide the canvas after exiting
+				document.getElementById('c').style.display = 'none';
+			}
+		}
+	});
 }
 
 loadModel();

@@ -34,7 +34,7 @@ document.addEventListener('wheel', function(event) {
 const scene = new THREE.Scene();
 
 // Load background texture
-const backgroundTexture = new THREE.TextureLoader().load('images/sky-background.jpeg');
+const backgroundTexture = new THREE.TextureLoader().load('images/creme.png');
 scene.background = backgroundTexture;
 
 // Camera

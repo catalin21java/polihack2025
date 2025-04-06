@@ -98,7 +98,7 @@ canvas {
 
 .content .section.dark {
 	color: #333;
-	background-color: #e6ecc6; /* Lighter pastel for "dark" sections */
+	background-color: #e9f5db; /* Lighter pastel for "dark" sections */
 }
 
 .content .section.right {
@@ -107,7 +107,7 @@ canvas {
 
 .content .blueprint {
 	position: relative;
-	background-color: #e6ecc6; /* Same light pastel instead of dark blue */
+	background-color: #e9f5db; /* Same light pastel instead of dark blue */
 	background-image: linear-gradient(rgba(144, 156, 111, 0.1) 1px, transparent 1px),
 	linear-gradient(90deg, rgba(144, 156, 111, 0.1) 1px, transparent 1px),
 	linear-gradient(rgba(144, 156, 111, 0.05) 1px, transparent 1px),
@@ -434,8 +434,8 @@ canvas {
     left: 20px;
     top: 70%;
     transform: translateY(-50%);
-    width: 700px;
-    height: 400px;
+    width: 600px;
+    height: 300px;
     z-index: 5;
     overflow: hidden;
     border-radius: 12px;
@@ -478,93 +478,80 @@ canvas {
 
 /* Additional filler sections styles */
 .additional-sections {
-    background-color: var(--color-background);
-    position: relative;
-    z-index: 5;
+    padding-top: 1rem;
+    margin-top: -2rem; /* Pull sections closer to previous content */
 }
 
 .filler-section {
-    padding: 70px 40px;
-    background-color: var(--color-background);
-    position: relative;
-    overflow: hidden;
-}
-
-.filler-section:nth-child(even) {
-    background-color: #e6ecc6;
+    padding: 2rem 0;
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
 }
 
 .filler-content {
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 10%; /* Increased padding from sides */
 }
 
 .filler-section h2 {
-    color: #3c4630;
-    font-size: 3rem;
     text-align: center;
-    margin-bottom: 40px;
-    display: block;
-    width: 100%;
-    position: relative;
-}
-
-.filler-section h2:after {
-    content: "";
-    display: block;
-    width: 80px;
-    height: 3px;
-    background-color: #a7bd7d;
-    margin: 20px auto 0;
+    color: #3a5a40;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
 }
 
 .filler-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem; /* Reduced gap between cards */
+    margin-bottom: 1rem;
 }
 
 .filler-card {
-    background-color: white;
-    border-radius: 12px;
+    background: white;
+    border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .filler-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transform: translateY(-5px);
 }
 
 .filler-img {
     width: 100%;
-    height: 200px;
+    height: 180px;
     object-fit: cover;
 }
 
 .filler-card h3 {
-    color: #3c4630;
-    font-size: 1.5rem;
-    margin: 20px 20px 10px;
-    font-weight: 700;
-    display: block;
+    color: #3a5a40;
+    padding: 1rem 1.5rem 0.5rem;
+    margin: 0;
+    font-size: 1.2rem;
 }
 
 .filler-card p {
-    color: #5a6744;
-    padding: 0 20px 20px;
-    font-size: 1rem;
-    line-height: 1.6;
+    padding: 0 1.5rem 1.5rem;
+    color: #555;
+    flex-grow: 1;
+    font-size: 0.95rem; /* Slightly smaller text */
+    line-height: 1.4; /* Tighter line height */
+    margin: 0;
 }
 
 /* Media queries for responsive design */
 @media (max-width: 768px) {
-    .filler-grid {
-        grid-template-columns: 1fr;
+    .filler-content {
+        padding: 0 5%; /* Less padding on smaller screens but still some */
     }
     
-    .filler-section h2 {
-        font-size: 2.5rem;
+    .filler-grid {
+        grid-template-columns: 1fr;
     }
 }

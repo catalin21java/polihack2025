@@ -4,218 +4,275 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Healthy Italy - Explore Wellness</title>
+	<link rel="stylesheet" href="style/dashboard.css">
 	<link rel="stylesheet" href="style/italy.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-	<div class="content">
-		<div class="loading">Loading</div>
-		<div class="trigger"></div>
-		<div class="section">
-			<!-- Italian flag in top right -->
-			<div class="italy-flag">
-				<div class="flag-green"></div>
-				<div class="flag-white"></div>
-				<div class="flag-red"></div>
-			</div>
-			<!-- Italian representative image on the left - now using CSS background -->
-			<div class="italy-image-container"></div>
-			<h1>Healthy Italy</h1>
-			<h3>A wellness paradise</h3>
-			<p>Discover the Mediterranean lifestyle with the iconic Vespa - eco-friendly transport & healthy living!</p>
-			
-		</div>
-		
-		<div class="section right">
-			<h2>Where wellness is a way of life...</h2>
-		</div>
-		
-		<div class="ground-container">
-			<div class="parallax ground"></div>
-			<div class="section right">
-				<div class="info-card">
-					<h2>Eco-Friendly Transport</h2>
-					<p>Italian cities embrace sustainable transportation, reducing pollution and promoting active lifestyles. Vespa scooters, bicycles, and extensive public transit networks make exploring Italy's beautiful cities both environmentally friendly and enjoyable.</p>
-					<p>The iconic Vespa isn't just a cultural symbol – it's part of Italy's commitment to reducing carbon emissions while preserving the joy of mobility. Many cities feature pedestrian zones, bike-sharing programs, and electric transport options.</p>
-					<img src="https://images.unsplash.com/photo-1531844251246-9a1bfaae09fc?q=80&w=2076&auto=format&fit=crop" alt="Vespa scooter on Italian street" class="section-img">
-				</div>
-			</div>
-		
-			<div class="section left">
-				<div class="info-card">
-					<h2>Active Italian Lifestyle</h2>
-					<p>Italians incorporate physical activity naturally into daily life. The walkable nature of historic cities, outdoor socializing in piazzas, and strong cycling culture contribute to an active lifestyle that promotes heart health and social wellbeing.</p>
-					<p>Community sports facilities, public parks, and open-air exercise groups make staying active accessible to people of all ages. Many Italians maintain traditional activities like walking after dinner (passeggiata) that combine exercise with social connection.</p>
-					<img src="https://images.unsplash.com/photo-1531844251246-9a1bfaae09fc?q=80&w=2076&auto=format&fit=crop" alt="Cycling in Italian countryside" class="section-img">
-				</div>
-			</div>
-			
-			<!-- Empty wellness section - background only -->
-			<div class="section wellness-bg"></div>
-			
-			<div class="parallax clouds"></div>
-		</div>
+	<!-- Sidebar Navigation -->
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://placehold.co/150x40/e9f5db/1b4332?text=EcoMove&font=poppins" alt="EcoMove Logo">
+            <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
+        </div>
+        <div class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="dashboard.html"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fas fa-gift"></i> <span>Rewards</span></a>
+                </li>
+                <li>
+                    <a href="health.html"><i class="fas fa-heart"></i> <span>Health</span></a>
+                </li>
+                <li class="active">
+                    <a href="globe.html"><i class="fas fa-globe"></i> <span>Discover other cities</span></a>
+                </li>
+                <li>
+                    <a href="dashboard.html#settings"><i class="fas fa-cog"></i> <span>Settings</span></a>
+                </li>
+            </ul>
+        </div>
+        <div class="sidebar-footer">
+            <a href="home.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+        </div>
+    </nav>
 
-		<div class="blueprint">
-			<svg width="100%" height="100%" viewbox="0 0 100 100">
-				<line id="line-length" x1="10" y1="80" x2="90" y2="80" stroke-width="0.5"></line>
-				<path id="line-wingspan" d="M10 50, L40 35, M60 35 L90 50" stroke-width="0.5"></path>
-				<circle id="circle-phalange" cx="60" cy="60" r="15" fill="transparent" stroke-width="0.5"></circle>
-			</svg>
-			<div class="section dark">
-				<h2>Health Destinations</h2>
-				<p>Explore Italy's wellness hotspots...</p>
-			</div>
-			<div class="section dark length">
-				<div class="destination-card">
-					<h2>Thermal Baths</h2>
-					<p>Italy's natural hot springs and therapeutic thermal baths have been healing visitors since Roman times. Locations like Saturnia in Tuscany and Ischia Island offer mineral-rich waters that promote relaxation and skin health.</p>
-				</div>
-			</div>
-			<div class="section dark wingspan">
-				<div class="destination-card">
-					<h2>Organic Farms</h2>
-					<p>Agriturismo experiences on organic farms allow visitors to reconnect with nature, enjoy farm-fresh meals, and learn sustainable agricultural practices from local farmers.</p>
-				</div>
-			</div>
-			<div class="section dark phalange">
-				<div class="destination-card">
-					<h2>Yoga Retreats</h2>
-					<p>From Tuscan villas to coastal sanctuaries, Italy offers world-class yoga and meditation retreats that combine mindfulness practices with stunning natural surroundings.</p>
-				</div>
-			</div>
-			<div class="section dark">
-				<div class="destination-card">
-					<h2>Alpine Wellness</h2>
-					<p>The Italian Alps feature wellness centers that combine clean mountain air, hiking trails, and traditional spa treatments for a rejuvenating experience.</p>
-				</div>
-			</div>
-		</div>
-		<div class="sunset">
-			<div class="section">
-				<!-- Wellness Tips section changed to background only -->
-				
-			</div>
-			
-			<!-- Mediterranean Diet section moved to bottom - background only -->
-			<div class="section mediterranean-bg"></div>
-			
-			<div class="section end">
-				<h2>Embrace the Healthy Italian Way</h2>
-				<div class="credits">
-					<p>Whether you're exploring charming villages by bike, enjoying farm-fresh meals with loved ones, or simply taking time to appreciate life's simple pleasures, Italy offers endless inspiration for a healthier, more balanced lifestyle.</p>
-					<p>Take home more than just memories – bring back wellness habits that can transform your daily routine and community.</p>
-					<p><a href="index.html">Back to World Explorer</a></p>
-				</div>
-			</div>
-		</div>
-	</div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation -->
+        <header class="top-nav">
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="icon-btn"><i class="fas fa-bell"></i></button>
+                    <span class="badge">3</span>
+                </div>
+                <div class="messages">
+                    <button class="icon-btn"><i class="fas fa-envelope"></i></button>
+                    <span class="badge">5</span>
+                </div>
+                <div class="user-profile">
+                    <img src="https://placehold.co/40x40/e9f5db/1b4332?text=JP&font=poppins" alt="User Profile">
+                    <div class="user-info">
+                        <p class="user-name">John Packer</p>
+                        <p class="user-role">Eco Enthusiast</p>
+                    </div>
+                </div>
+            </div>
+        </header>
 
-	<!-- Additional filler sections without the scooter -->
-	<div class="additional-sections">
-		<!-- Healthy Places Section -->
-		<div class="filler-section">
-			<div class="filler-content">
-				<h2>Healthy Places in Italy</h2>
-				<div class="filler-grid">
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1000&auto=format&fit=crop" alt="Cinque Terre" class="filler-img">
-						<h3>Cinque Terre</h3>
-						<p>Famous for its hiking trails connecting five colorful villages along the rugged Italian Riviera coastline, offering breathtaking views and clean air.</p>
-					</div>
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1516186366443-0744a82bdc4d?q=80&w=1000&auto=format&fit=crop" alt="Sardinia's Blue Zone" class="filler-img">
-						<h3>Sardinia's Blue Zone</h3>
-						<p>One of only five regions in the world where people live measurably longer lives, known for its community-centered lifestyle and traditional diet.</p>
-					</div>
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1568822617270-2c1579f8dfe2?q=80&w=1000&auto=format&fit=crop" alt="Thermal Baths" class="filler-img">
-						<h3>Saturnia Thermal Springs</h3>
-						<p>Natural hot springs in Tuscany with therapeutic sulfurous waters that have been used for health treatments since Etruscan and Roman times.</p>
-					</div>
-				</div>
-			</div>
-		</div>
+        <!-- Original Content -->
+        <div class="content">
+            <div class="loading">Loading</div>
+            <div class="trigger"></div>
+            <div class="section">
+                <!-- Italian flag in top right -->
+                <div class="italy-flag">
+                    <div class="flag-green"></div>
+                    <div class="flag-white"></div>
+                    <div class="flag-red"></div>
+                </div>
+                <!-- Italian representative image on the left - now using CSS background -->
+                <div class="italy-image-container"></div>
+                <h1>Healthy Italy</h1>
+                <h3>A wellness paradise</h3>
+                <p>Discover the Mediterranean lifestyle with the iconic Vespa - eco-friendly transport & healthy living!</p>
+                
+            </div>
+            
+            <div class="section right">
+                <h2>Where wellness is a way of life...</h2>
+            </div>
+            
+       
 
-		<!-- Healthy Activities Section -->
-		<div class="filler-section">
-			<div class="filler-content">
-				<h2>Healthy Activities in Italy</h2>
-				<div class="filler-grid">
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1528223871781-8f4c984f6164?q=80&w=1000&auto=format&fit=crop" alt="Cycling in Tuscany" class="filler-img">
-						<h3>Cycling in Tuscany</h3>
-						<p>Explore the rolling hills and cypress-lined roads of Tuscany by bicycle, combining exercise with stunning scenery and cultural experiences.</p>
-					</div>
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?q=80&w=1000&auto=format&fit=crop" alt="Walking Tours" class="filler-img">
-						<h3>Urban Walking Tours</h3>
-						<p>Discover Italy's historic cities on foot with guided walking tours that combine history, art, and architecture with physical activity.</p>
-					</div>
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?q=80&w=1000&auto=format&fit=crop" alt="Yoga Retreat" class="filler-img">
-						<h3>Countryside Yoga Retreats</h3>
-						<p>Practice mindfulness and movement in peaceful Italian settings, from Umbrian farmhouses to Pugliese masserie surrounded by olive groves.</p>
-					</div>
-				</div>
-			</div>
-		</div>
+            <!-- Additional filler sections without the scooter -->
+            <div class="additional-sections">
+                <!-- Healthy Places Section -->
+                <div class="filler-section">
+                    <div class="filler-content">
+                        <h2>Healthy Places in Italy</h2>
+                        <div class="filler-grid">
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1552832230-c0197dd311b5?q=80&w=1000&auto=format&fit=crop" alt="Cinque Terre" class="filler-img">
+                                <h3>Cinque Terre</h3>
+                                <p>Scenic hiking trails connecting five colorful villages with breathtaking coastal views.</p>
+                            </div>
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1516186366443-0744a82bdc4d?q=80&w=1000&auto=format&fit=crop" alt="Sardinia's Blue Zone" class="filler-img">
+                                <h3>Sardinia's Blue Zone</h3>
+                                <p>One of five global regions where people live exceptionally long lives due to lifestyle and diet.</p>
+                            </div>
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1568822617270-2c1579f8dfe2?q=80&w=1000&auto=format&fit=crop" alt="Thermal Baths" class="filler-img">
+                                <h3>Saturnia Thermal Springs</h3>
+                                <p>Natural hot springs with therapeutic sulfurous waters used since Roman times.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-		<!-- Healthy Restaurants Section -->
-		<div class="filler-section">
-			<div class="filler-content">
-				<h2>Healthy Restaurants in Italy</h2>
-				<div class="filler-grid">
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?q=80&w=1000&auto=format&fit=crop" alt="Farm to Table" class="filler-img">
-						<h3>Farm-to-Table Trattorias</h3>
-						<p>Restaurants serving dishes made with ingredients grown on their own farms or sourced from local producers, emphasizing freshness and sustainability.</p>
-					</div>
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1498579809087-ef1e558fd1da?q=80&w=1000&auto=format&fit=crop" alt="Pescatarian Options" class="filler-img">
-						<h3>Coastal Pescatarian Options</h3>
-						<p>Seaside restaurants offering Mediterranean diet staples with fresh-caught fish, seafood, and locally grown vegetables prepared with heart-healthy olive oil.</p>
-					</div>
-					<div class="filler-card">
-						<img src="https://images.unsplash.com/photo-1579684947550-22e945225d9a?q=80&w=1000&auto=format&fit=crop" alt="Plant-Based Options" class="filler-img">
-						<h3>Modern Plant-Based Eateries</h3>
-						<p>Contemporary restaurants reimagining traditional Italian cuisine with plant-forward approaches, using local produce and ancient grains.</p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+                <!-- Healthy Activities Section -->
+                <div class="filler-section">
+                    <div class="filler-content">
+                        <h2>Healthy Activities in Italy</h2>
+                        <div class="filler-grid">
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1528223871781-8f4c984f6164?q=80&w=1000&auto=format&fit=crop" alt="Cycling in Tuscany" class="filler-img">
+                                <h3>Cycling in Tuscany</h3>
+                                <p>Explore rolling hills and cypress-lined roads by bicycle for exercise with scenery.</p>
+                            </div>
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?q=80&w=1000&auto=format&fit=crop" alt="Walking Tours" class="filler-img">
+                                <h3>Urban Walking Tours</h3>
+                                <p>Discover historic cities on foot with guided tours combining history and activity.</p>
+                            </div>
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1544551763-77ef2d0cfc6c?q=80&w=1000&auto=format&fit=crop" alt="Yoga Retreat" class="filler-img">
+                                <h3>Countryside Yoga Retreats</h3>
+                                <p>Practice mindfulness in peaceful settings from Umbrian farmhouses to olive groves.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-	<!-- Canvas for the 3D Vespa model -->
-	<canvas id="c"></canvas>
-	
-	<!-- Background elements -->
-	<div class="ground"></div>
-	<div class="clouds"></div>
-	<div class="sunset"></div>
-	
-	<!-- Required libraries - moved to end of body -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-	<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin3.min.js"></script>
-	<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
-	<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ScrollTrigger.min.js"></script>
-	<!-- GLTF Loader for Vespa model -->
-	<script src="https://cdn.jsdelivr.net/npm/three@0.131.3/examples/js/loaders/GLTFLoader.min.js"></script>
-	<!-- Main script file -->
-	<script src="src/italy.js"></script>
-	<!-- Script to hide canvas in additional sections -->
-	<script>
-		document.addEventListener('DOMContentLoaded', function() {
-			// Hide canvas when entering additional sections
-			gsap.to('canvas', {
-				autoAlpha: 0,
-				scrollTrigger: {
-					trigger: '.additional-sections',
-					start: 'top 80%',
-					end: 'top 50%',
-					scrub: true
-				}
-			});
-		});
-	</script>
+                <!-- Healthy Restaurants Section -->
+                <div class="filler-section">
+                    <div class="filler-content">
+                        <h2>Healthy Restaurants in Italy</h2>
+                        <div class="filler-grid">
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?q=80&w=1000&auto=format&fit=crop" alt="Farm to Table" class="filler-img">
+                                <h3>Farm-to-Table Trattorias</h3>
+                                <p>Fresh dishes with ingredients from on-site farms or local producers.</p>
+                            </div>
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1498579809087-ef1e558fd1da?q=80&w=1000&auto=format&fit=crop" alt="Pescatarian Options" class="filler-img">
+                                <h3>Coastal Pescatarian Options</h3>
+                                <p>Seaside restaurants with Mediterranean diet staples including fresh seafood.</p>
+                            </div>
+                            <div class="filler-card">
+                                <img src="https://images.unsplash.com/photo-1579684947550-22e945225d9a?q=80&w=1000&auto=format&fit=crop" alt="Plant-Based Options" class="filler-img">
+                                <h3>Modern Plant-Based Eateries</h3>
+                                <p>Contemporary restaurants reimagining Italian cuisine with local produce.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Canvas for the 3D Vespa model -->
+    <canvas id="c"></canvas>
+    
+    <!-- Background elements -->
+    <div class="ground"></div>
+    <div class="clouds"></div>
+    <div class="sunset"></div>
+    
+    <!-- Required libraries - moved to end of body -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/DrawSVGPlugin3.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/gsap-latest-beta.min.js"></script>
+    <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/ScrollTrigger.min.js"></script>
+    <!-- GLTF Loader for Vespa model -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.131.3/examples/js/loaders/GLTFLoader.min.js"></script>
+    <!-- Main script file -->
+    <script src="src/italy.js"></script>
+    <script src="src/dashboard.js"></script>
+    <!-- Script to hide canvas in additional sections -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide canvas when entering additional sections
+            gsap.to('canvas', {
+                autoAlpha: 0,
+                scrollTrigger: {
+                    trigger: '.additional-sections',
+                    start: 'top 80%',
+                    end: 'top 50%',
+                    scrub: true
+                }
+            });
+            
+            // Add additional script to make the page focus on content after Vespa leaves
+            gsap.to('.content', {
+                scrollTrigger: {
+                    trigger: '.ground-container',
+                    start: '25% top',
+                    onEnter: () => {
+                        // Ensure canvas doesn't block content
+                        const canvas = document.getElementById('c');
+                        if (canvas) {
+                            canvas.style.display = 'none';
+                            canvas.style.visibility = 'hidden';
+                        }
+                        
+                        // Make content more visible
+                        document.querySelectorAll('.section').forEach(section => {
+                            section.style.zIndex = '20';
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+    
+    <style>
+        /* Ensure top navigation bar is visible */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px 20px;
+            border-bottom: 1px solid #eaeaea;
+            z-index: 100;
+            position: relative;
+        }
+        
+        .main-content {
+            padding-left: 0;
+            padding-top: 0;
+        }
+        
+        /* Adjust styles for compatibility with sidebar */
+        .content, .additional-sections {
+            margin-left: 0;
+            width: 100%;
+        }
+        
+        canvas {
+            position: fixed !important;
+            left: var(--sidebar-width) !important;
+            width: calc(100% - var(--sidebar-width)) !important;
+        }
+        
+        /* When sidebar is collapsed */
+        .sidebar-collapsed ~ .main-content canvas {
+            left: var(--sidebar-collapsed-width) !important;
+            width: calc(100% - var(--sidebar-collapsed-width)) !important;
+        }
+        
+        /* Fix for Italy flag in original style */
+        .italy-flag {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            width: 60px;
+            height: 40px;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 10;
+        }
+    </style>
 </body>
 </html>
