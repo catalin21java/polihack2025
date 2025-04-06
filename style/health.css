@@ -1128,6 +1128,19 @@ input, select, textarea {
     .health-dashboard {
         padding: var(--spacing-md);
     }
+    
+    .device-support {
+        margin-top: 15px;
+    }
+    
+    .currently-supported, .future-support {
+        gap: 10px;
+    }
+    
+    .currently-supported span, .future-support span {
+        min-width: 100%;
+        margin-bottom: 5px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -1247,4 +1260,45 @@ input, select, textarea {
 
 .supported-devices img:hover {
     opacity: 1;
+}
+
+/* Device Support Styling */
+.device-support {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.currently-supported, .future-support {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.currently-supported span, .future-support span {
+    font-weight: 500;
+    color: var(--text-secondary);
+    min-width: 150px;
+}
+
+.currently-supported img, .future-support img {
+    height: 30px;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.currently-supported img.supported {
+    filter: none;
+    opacity: 1;
+}
+
+.future-support img.coming-soon {
+    filter: grayscale(100%);
+    opacity: 0.6;
+}
+
+.currently-supported img:hover, .future-support img:hover {
+    transform: scale(1.1);
 }
