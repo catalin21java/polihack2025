@@ -302,3 +302,73 @@
   font-weight: 600;
   margin: 10px 0;
 }
+
+/* Google Maps Section */
+#map-section {
+  padding: 40px 60px;
+  margin: 40px auto 60px;
+  max-width: 1400px;
+  background-image: url('../images/creme.png');
+  background-repeat: repeat;
+}
+
+#map-section h2 {
+  text-align: center;
+  font-size: 28px;
+  color: #1b4332;
+  margin-bottom: 20px;
+}
+
+#map-container {
+  height: 450px;
+  border-radius: 20px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.map-info-window {
+  min-width: 200px;
+  padding: 10px;
+}
+
+.map-info-window h3 {
+  font-size: 16px;
+  color: #1b4332;
+  margin-bottom: 5px;
+}
+
+.map-info-window img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  margin-right: 10px;
+  float: left;
+}
+
+.map-info-window p {
+  font-size: 14px;
+  color: #444;
+  margin: 5px 0;
+}
+
+.map-info-window a {
+  display: inline-block;
+  background-color: #1b4332;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 12px;
+  margin-top: 8px;
+  transition: background-color 0.2s;
+}
+
+.map-info-window a:hover {
+  background-color: #14532d;
+}
+
+.gm-style-iw {
+  border-radius: 10px !important;
+  padding: 8px !important;
+}

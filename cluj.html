@@ -74,6 +74,12 @@
       <h1>Local Rewards in Cluj-Napoca</h1>
       <div id="business-grid"></div>
     </div>
+    
+    <!-- Google Maps Section -->
+    <section id="map-section">
+      <h2>Find Our Partners in Cluj-Napoca</h2>
+      <div id="map-container"></div>
+    </section>
   </main>
 
   <!-- Modal for Offers -->
@@ -101,6 +107,135 @@
       <p class="qr-expiry">Valid for 24 hours</p>
     </div>
   </div>
+
+  <!-- Leaflet CSS and JS (OpenStreetMap) - No API key needed -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Map Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Initialize map when document is loaded
+      // Cluj-Napoca center coordinates
+      const clujCenter = [46.770439, 23.591423];
+      
+      // Create map
+      const map = L.map('map-container').setView(clujCenter, 14);
+      
+      // Add OpenStreetMap tile layer (no API key needed)
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(map);
+      
+      // Partner locations data
+      const locations = [
+        {
+          name: "18GYM",
+          address: "Strada Plopilor 59, Cluj-Napoca",
+          lat: 46.760539, 
+          lng: 23.569427,
+          logo: "images/18_gym_logo.png",
+          offer: "Free Workout Pass & 10% Off Membership"
+        },
+        {
+          name: "Centrala de Escaladă",
+          address: "Calea Baciului 4, Cluj-Napoca",
+          lat: 46.784589, 
+          lng: 23.553234,
+          logo: "images/centrala de escalada.jpeg",
+          offer: "10% Off Climbing Gear & Free Entry"
+        },
+        {
+          name: "Cimbru",
+          address: "Strada Cardinal Iuliu Hossu 8, Cluj-Napoca",
+          lat: 46.770223, 
+          lng: 23.593425,
+          logo: "images/cimbru_logo.png",
+          offer: "Free Dessert & 15% Off Lunch Menus"
+        },
+        {
+          name: "Meron",
+          address: "Piața Unirii 13, Cluj-Napoca",
+          lat: 46.769468, 
+          lng: 23.589602,
+          logo: "images/meron_coffee.png",
+          offer: "Free Ethiopia Coffee Pack"
+        },
+        {
+          name: "Runners Club",
+          address: "Strada Piezișă 4, Cluj-Napoca",
+          lat: 46.766723, 
+          lng: 23.572701,
+          logo: "images/runners_club_logo.png",
+          offer: "10% Off Coffee at LET'S COFFEE"
+        },
+        {
+          name: "Samsara",
+          address: "Strada Ștefan Octavian Iosif 4, Cluj-Napoca",
+          lat: 46.768293, 
+          lng: 23.582775,
+          logo: "images/samsara_logo.jpeg",
+          offer: "Free Smoothie & 15% Off Earth Bowl"
+        },
+        {
+          name: "Ted's Coffee",
+          address: "Strada Memorandumului 3, Cluj-Napoca",
+          lat: 46.769871, 
+          lng: 23.586851,
+          logo: "images/teds_logo.png",
+          offer: "Free Refill with own cup"
+        },
+        {
+          name: "Decathlon",
+          address: "Strada Avram Iancu 492, Florești",
+          lat: 46.750114, 
+          lng: 23.521395,
+          logo: "images/decathlon_logo.png",
+          offer: "10% Off Gear & Free Sports Socks"
+        }
+      ];
+      
+      // Create a custom green icon
+      const greenIcon = L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+      });
+      
+      // Add markers for each location
+      locations.forEach(location => {
+        // Create popup content
+        const popupContent = `
+          <div class="map-info-window">
+            <img src="${location.logo}" alt="${location.name} Logo">
+            <h3>${location.name}</h3>
+            <p>${location.address}</p>
+            <p><strong>Offers:</strong> ${location.offer}</p>
+            <a href="#" onclick="showPartnerDetails('${location.name}'); return false;">View Rewards</a>
+          </div>
+        `;
+        
+        // Add marker with popup
+        L.marker([location.lat, location.lng], {icon: greenIcon})
+          .addTo(map)
+          .bindPopup(popupContent);
+      });
+    });
+    
+    // Function to show partner details (triggered from popup)
+    function showPartnerDetails(partnerName) {
+      // Find the partner's business card and trigger a click
+      const businessCards = document.querySelectorAll('.business-card');
+      businessCards.forEach(card => {
+        if (card.querySelector('h3').textContent === partnerName) {
+          card.click();
+        }
+      });
+    }
+  </script>
 
   <script type="module" src="src/cluj.js"></script>
 </body>
