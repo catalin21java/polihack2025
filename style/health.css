@@ -396,7 +396,9 @@ input, select, textarea {
 
 /* ===== HEALTH DASHBOARD CONTENT ===== */
 .health-dashboard {
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
+    background-image: url('../images/creme.png');
+    background-repeat: repeat;
 }
 
 /* Welcome Section */

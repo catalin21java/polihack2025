@@ -1,8 +1,8 @@
-
 /* ==== OFFERS LAYOUT MATCHING DASHBOARD ==== */
 #offers-container {
   padding: 40px;
-  background-color: #f9fefb;
+  background-image: url('../images/creme.png');
+  background-repeat: repeat;
   max-width: 1200px;
   margin: 0 auto;
   font-family: 'Poppins', sans-serif;
@@ -18,7 +18,7 @@
 /* Grid for business cards */
 #business-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 10px;
 }
