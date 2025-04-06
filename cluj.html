@@ -15,7 +15,7 @@
   <!-- Sidebar Navigation -->
   <nav class="sidebar">
     <div class="sidebar-header">
-      <img src="https://placehold.co/150x40/e9f5db/1b4332?text=EcoMove&font=poppins" alt="EcoMove Logo">
+      <img src="https://placehold.co/150x40/e9f5db/1b4332?text=StepN'Up&font=poppins" alt="StepN'Up Logo">
       <button class="sidebar-toggle"><i class="fas fa-bars"></i></button>
     </div>
     <div class="sidebar-menu">
@@ -50,14 +50,13 @@
           <span class="badge">5</span>
         </div>
         <div class="custom-dropdown">
-          <button id="dropdownButton">
-            🌍 Select City <i class="fas fa-chevron-down"></i>
-          </button>
-          <div class="dropdown-options" id="dropdownOptions">
-            <a href="cluj.html">Cluj</a>
-            <a href="timisoara.html">Timișoara</a>
-          </div>
+          <select id="cityDropdown" onchange="handleCityChange()">
+            <option disabled selected>Select City</option>
+            <option value="cluj.html">Cluj</option>
+            <option value="timisoara.html">Timișoara</option>
+          </select>
         </div>
+        
         
         <div class="user-profile">
           <img src="https://placehold.co/40x40/e9f5db/1b4332?text=JP&font=poppins" alt="User Profile">
