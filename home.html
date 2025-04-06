@@ -3,354 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StepN'up - Turn Your Green Trips Into Rewards</title>
-    <link rel="stylesheet" href="style/home.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>3D Earth Demo with Cities</title>
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="container">
-            <div class="logo">
-                <img src="https://placehold.co/200x50/e9f5db/1b4332?text=StepN'up&font=poppins" alt="StepN'up Logo">
-            </div>
-            <div class="nav-links">
-                <ul>
-                    <li><a href="#home" class="active">Home</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#rewards">Rewards</a></li>
-                    <li><a href="#partners">Partners</a></li>
-                    <li><a href="#about">About</a></li>
-                </ul>
-            </div>
-            <div class="auth-buttons">
-                <a href="dashboard.html" class="btn btn-outline">Log In</a>
-                <a href="dashboard.html" class="btn btn-primary">Sign Up</a>
-            </div>
-            <div class="hamburger">
-                <i class="fas fa-bars"></i>
-            </div>
+    <section id="hero">
+        <div class="hero-content">
+            <h1>Explore Our World</h1>
+            <p>Discover amazing cities and landmarks across the globe in this interactive 3D experience</p>
+            <button id="explore-btn">Start Exploring</button>
+           
         </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <h1>Earn While You <span class="highlight">Move Green</span></h1>
-                <p>Turn every eco-friendly trip into reward points. Walk, bike, or use public transport and get rewarded at your favorite local businesses.</p>
-                <div class="hero-buttons">
-                    <a href="dashboard.html" class="btn btn-primary">Get Started</a>
-                    <a href="#how-it-works" class="btn btn-outline">Learn More</a>
+        <div class="arrow-down" id="arrow-down"></div>
+    </section>
+    
+    <section id="globe-section">
+        <canvas id="canvas"></canvas>
+        <div id="city-markers-container"></div>
+        <div id="city-overlay">
+            <button id="overlay-close">&times;</button>
+            <div class="city-header">
+                <h2 id="city-title">City Name</h2>
+                <div class="country-info">
+                    <span id="country-name">Country</span>
+                    <img id="country-flag" src="" alt="Country Flag">
                 </div>
-              
             </div>
-            <div class="hero-image">
-                <div class="image-wrapper">
-                <img src="images/homepage.webp" alt="Eco-friendly transportation">
+            <div class="city-image-container">
+                <img id="city-image" src="" alt="City Image">
             </div>
+            <div id="city-info">City information will appear here...</div>
+            <div class="button-container">
+                <button id="learn-more-btn">Find Out More</button>
             </div>
         </div>
     </section>
-
-    <!-- Features Section -->
-    <section id="features" class="features">
-        <div class="container">
-            <div class="section-header">
-                <h2>Why Choose <span class="highlight">StepN'Up?</span></h2>
-                <p>Our platform makes sustainable transportation both rewarding and fun</p>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                    <h3>Eco-Friendly</h3>
-                    <p>Reduce your carbon footprint with every trip and contribute to a cleaner environment.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-gift"></i>
-                    </div>
-                    <h3>Earn Rewards</h3>
-                    <p>Collect points for each eco-trip and redeem them at local businesses you love.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-store"></i>
-                    </div>
-                    <h3>Support Local</h3>
-                    <p>Your green choices help stimulate the local economy and community growth.</p>
-                </div>
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-heart-pulse"></i>
-                    </div>
-                    <h3>Stay Healthy</h3>
-                    <p>Walking and biking improves your physical and mental wellbeing every day.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works Section -->
-    <section id="how-it-works" class="how-it-works">
-        <div class="container">
-            <div class="section-header">
-                <h2>How <span class="highlight">It Works</span></h2>
-                <p>Start earning rewards in three simple steps</p>
-            </div>
-            <div class="steps">
-                <div class="step">
-                    <div class="step-number">1</div>
-                    <div class="step-content">
-                        <h3>Sign Up</h3>
-                        <p>Create your account in minutes and set your transportation preferences.</p>
-                    </div>
-                    <div class="step-image">
-                        <img src="https://placehold.co/300x200/e9f5db/1b4332?text=Sign+Up&font=poppins" alt="Sign Up">
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">2</div>
-                    <div class="step-content">
-                        <h3>Track Your Eco-Trips</h3>
-                        <p>Our app automatically detects walking, biking, and public transport usage.</p>
-                    </div>
-                    <div class="step-image">
-                        <img src="https://placehold.co/300x200/e9f5db/1b4332?text=Track&font=poppins" alt="Track Trips">
-                    </div>
-                </div>
-                <div class="step">
-                    <div class="step-number">3</div>
-                    <div class="step-content">
-                        <h3>Redeem & Enjoy</h3>
-                        <p>Use your earned points at local cafes, shops, and entertainment venues.</p>
-                    </div>
-                    <div class="step-image">
-                        <img src="https://placehold.co/300x200/e9f5db/1b4332?text=Redeem&font=poppins" alt="Redeem Rewards">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Rewards Section -->
-    <section id="rewards" class="rewards">
-        <div class="container">
-            <div class="section-header">
-                <h2>Featured <span class="highlight">Rewards</span></h2>
-                <p>Check out what you can get with your eco-points</p>
-            </div>
-            <div class="rewards-grid">
-                <div class="reward-card">
-                    <div class="reward-image">
-                        <img src="images/coffee.webp" alt="Cafe Reward">
-                        <div class="points-badge">150 pts</div>
-                    </div>
-                    <div class="reward-content">
-                        <h3>Free Coffee</h3>
-                        <p>Green Bean Cafe</p>
-                        <a href="dashboard.html" class="btn btn-sm">Redeem</a>
-                    </div>
-                </div>
-                <div class="reward-card">
-                    <div class="reward-image">
-                        <img src="images/bikes.jpg" alt="Bike Shop Reward">
-                        <div class="points-badge">300 pts</div>
-                    </div>
-                    <div class="reward-content">
-                        <h3>Bike Tune-Up</h3>
-                        <p>City Cycles</p>
-                        <a href="dashboard.html" class="btn btn-sm">Redeem</a>
-                    </div>
-                </div>
-                <div class="reward-card">
-                    <div class="reward-image">
-                        <img src="images/restaurant.jpg" alt="Restaurant Reward">
-                        <div class="points-badge">500 pts</div>
-                    </div>
-                    <div class="reward-content">
-                        <h3>Dinner for Two</h3>
-                        <p>Fresh Harvest Restaurant</p>
-                        <a href="dashboard.html" class="btn btn-sm">Redeem</a>
-                    </div>
-                </div>
-                <div class="reward-card">
-                    <div class="reward-image">
-                        <img src="images/cinema.jpg" alt="Movie Reward">
-                        <div class="points-badge">250 pts</div>
-                    </div>
-                    <div class="reward-content">
-                        <h3>Movie Tickets</h3>
-                        <p>Cinema City</p>
-                        <a href="dashboard.html" class="btn btn-sm">Redeem</a>
-                    </div>
-                </div>
-            </div>
-            <div class="view-all">
-                <button class="btn btn-outline">View All Rewards</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Partners Section -->
-
-    <!-- Partners Section -->
-<section id="partners" class="partners">
-    <div class="container">
-      <div class="section-header">
-        <h2>Our <span class="highlight">Partners</span></h2>
-        <p>Trusted local brands that support sustainable living</p>
-      </div>
-      <div class="partners-grid">
-        <img src="images/18_gym_logo.png" alt="18GYM">
-        <img src="images/centrala de escalada.jpeg" alt="Centrala de Escalada">
-        <img src="images/cimbru_logo.png" alt="Cimbru">
-        <img src="images/decathlon_logo.png" alt="Decathlon">
-        <img src="images/marty_logo.png" alt="Marty">
-        <img src="images/meron_coffee.png" alt="Meron">
-        <img src="images/runners_club_logo.png" alt="Runners Club">
-        <img src="images/samsara_logo.jpeg" alt="Samsara">
-        <img src="images/teds_logo.png" alt="Ted's Coffee">
-        <img src="images/gym_one_tm.jfif" alt="Gym One">
-        <img src="images/japanesse_rest_logo.png" alt="Tokyo Japanese Restaurant">
-        <img src="images/statiadecafea_tm.png" alt="Stația de Cafea">
-        <img src="images/timisoaraMaraton.jpg" alt="Timișoara City Marathon">
-        <img src="images/wizz_offer1.jpeg" alt="Wizz Air Cluj Marathon">
-      </div>
-    </div>
-  </section>
-  
-  
-
-    <!-- Testimonials Section -->
-    <section class="testimonials">
-        <div class="container">
-            <div class="section-header">
-                <h2>What Our <span class="highlight">Users Say</span></h2>
-                <p>Join thousands of satisfied StepN'up members</p>
-            </div>
-            <div class="testimonials-slider">
-                <div class="testimonial">
-                    <div class="quote">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
-                    <p>"I've saved money on gas and earned enough points for free coffee every week. It's a win-win!"</p>
-                    <div class="user">
-                        <img src="https://placehold.co/50x50/e9f5db/1b4332?text=J&font=poppins" alt="User">
-                        <div class="user-info">
-                            <h4>Jessica K.</h4>
-                            <p>StepN'up user for 6 months</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="quote">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
-                    <p>"The app makes it fun to choose eco-friendly options. My kids and I compete for who can earn the most points!"</p>
-                    <div class="user">
-                        <img src="https://placehold.co/50x50/e9f5db/1b4332?text=M&font=poppins" alt="User">
-                        <div class="user-info">
-                            <h4>Michael T.</h4>
-                            <p>StepN'up user for 1 year</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial">
-                    <div class="quote">
-                        <i class="fas fa-quote-left"></i>
-                    </div>
-                    <p>"As a business owner, partnering with StepN'Up has brought in new customers who are environmentally conscious."</p>
-                    <div class="user">
-                        <img src="https://placehold.co/50x50/e9f5db/1b4332?text=S&font=poppins" alt="User">
-                        <div class="user-info">
-                            <h4>Sarah L.</h4>
-                            <p>Local Business Partner</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="slider-controls">
-                <button class="prev-btn"><i class="fas fa-chevron-left"></i></button>
-                <div class="dots">
-                    <span class="dot active"></span>
-                    <span class="dot"></span>
-                    <span class="dot"></span>
-                </div>
-                <button class="next-btn"><i class="fas fa-chevron-right"></i></button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Newsletter Section -->
-    <section class="newsletter">
-        <div class="container">
-            <div class="newsletter-content">
-                <h2>Stay <span class="highlight">Updated</span></h2>
-                <p>Subscribe to our newsletter for tips on sustainable living and exclusive rewards</p>
-                <form class="newsletter-form">
-                    <input type="email" placeholder="Your email address">
-                    <button type="submit" class="btn btn-primary">Subscribe</button>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <img src="https://placehold.co/200x50/e9f5db/1b4332?text=StepN'Up&font=poppins" alt="StepN'Up Logo">
-                    <p>Making eco-transportation rewarding since 2025</p>
-                </div>
-                <div class="footer-links">
-                    <div class="link-group">
-                        <h4>Company</h4>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">Our Team</a></li>
-                            <li><a href="#">Careers</a></li>
-                            <li><a href="#">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div class="link-group">
-                        <h4>Resources</h4>
-                        <ul>
-                            <li><a href="#">Blog</a></li>
-                            <li><a href="#">Partner Network</a></li>
-                            <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Help Center</a></li>
-                        </ul>
-                    </div>
-                    <div class="link-group">
-                        <h4>Legal</h4>
-                        <ul>
-                            <li><a href="#">Terms of Service</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Cookie Policy</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="footer-social">
-                    <h4>Follow Us</h4>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 StepN'up. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
-
-    <script src="src/home.js"></script>
+    <script type="module" src="src/script.js"></script>
 </body>
 </html>

@@ -331,4 +331,108 @@ body {
   background-color: #d6c7a9;
   transform: translateY(-2px);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive styles for Globe page */
+@media (max-width: 992px) {
+  .city-cards {
+    flex-direction: column;
+  }
+  
+  .city-card {
+    margin-bottom: 20px;
+  }
+  
+  #globe-section {
+    height: 500px;
+  }
+  
+  #city-overlay {
+    width: 300px;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-content h1 {
+    font-size: 3rem;
+  }
+  
+  .hero-content p {
+    font-size: 1.2rem;
+  }
+  
+  #globe-section {
+    height: 400px;
+  }
+  
+  .visited-cities {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .city-badge {
+    margin: 5px;
+  }
+  
+  .welcome-section {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .date-picker {
+    margin-top: 15px;
+  }
+  
+  #city-overlay {
+    width: 280px;
+  }
+  
+  .city-image-container {
+    height: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-content h1 {
+    font-size: 2.5rem;
+  }
+  
+  .hero-content p {
+    font-size: 1rem;
+  }
+  
+  #globe-section {
+    height: 350px;
+  }
+  
+  #city-overlay {
+    width: 260px;
+    right: -260px;
+  }
+  
+  .city-header {
+    padding: 20px 15px 10px;
+  }
+  
+  #city-title {
+    font-size: 24px;
+  }
+  
+  .city-image-container {
+    height: 160px;
+  }
+  
+  #city-info {
+    padding: 15px;
+    font-size: 14px;
+  }
+  
+  .button-container {
+    padding: 0 15px 20px;
+  }
+  
+  #learn-more-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
 } 

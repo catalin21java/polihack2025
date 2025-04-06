@@ -1235,19 +1235,69 @@ input, select, textarea {
 @media (max-width: 768px) {
     .sidebar {
         transform: translateX(-100%);
+        width: 80%; /* Wider sidebar on mobile */
         z-index: 1001;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        transition: transform 0.3s ease;
+        box-shadow: var(--shadow-lg);
     }
     
     .sidebar.show {
         transform: translateX(0);
     }
     
+    /* Show sidebar spans on mobile when expanded */
+    .sidebar-menu ul li a span,
+    .sidebar-footer a span {
+        display: inline;
+    }
+    
+    /* Add overlay when sidebar is open */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    /* Mobile menu toggle button */
+    .mobile-menu-toggle {
+        display: block;
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 999;
+        background-color: var(--primary-dark);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-md);
+    }
+    
     .main-content {
         margin-left: 0;
+        padding-top: var(--topnav-height);
     }
     
     .top-nav {
-        justify-content: center;
+        justify-content: flex-end;
+        padding-left: 60px; /* Make room for mobile menu button */
     }
     
     .search-bar {

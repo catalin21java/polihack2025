@@ -11,6 +11,14 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
+    <!-- Mobile Menu Toggle Button -->
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+        <i class="fas fa-bars"></i>
+    </button>
+    
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    
     <!-- Sidebar Navigation -->
     <nav class="sidebar">
         <div class="sidebar-header">
@@ -34,7 +42,7 @@
             </ul>
         </div>
         <div class="sidebar-footer">
-            <a href="home.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+            <a href="index.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
         </div>
     </nav>
 
@@ -451,7 +459,32 @@
         } else {
             document.querySelector('.rewards-list').innerHTML = '<p>Geolocation is not supported.</p>';
         }
-        </script>
-        
+
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+            const sidebar = document.querySelector('.sidebar');
+            const sidebarOverlay = document.getElementById('sidebar-overlay');
+            
+            // Toggle sidebar on mobile
+            mobileMenuToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('show');
+                sidebarOverlay.classList.toggle('active');
+            });
+            
+            // Close sidebar when clicking overlay
+            sidebarOverlay.addEventListener('click', function() {
+                sidebar.classList.remove('show');
+                sidebarOverlay.classList.remove('active');
+            });
+            
+            // Existing sidebar toggle functionality
+            const sidebarToggle = document.querySelector('.sidebar-toggle');
+            sidebarToggle.addEventListener('click', function() {
+                sidebar.classList.toggle('sidebar-collapsed');
+                document.querySelector('.main-content').classList.toggle('expanded');
+            });
+        });
+    </script>
 </body>
 </html>

@@ -10,7 +10,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
- 
+  <!-- Mobile Menu Toggle Button -->
+  <button class="mobile-menu-toggle" id="mobile-menu-toggle">
+    <i class="fas fa-bars"></i>
+  </button>
+  
+  <!-- Sidebar Overlay for Mobile -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
   
   <!-- Sidebar Navigation -->
   <nav class="sidebar">
@@ -27,7 +33,7 @@
       </ul>
     </div>
     <div class="sidebar-footer">
-      <a href="home.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
+      <a href="index.html"><i class="fas fa-sign-out-alt"></i> <span>Logout</span></a>
     </div>
   </nav>
 
@@ -235,6 +241,37 @@
         }
       });
     }
+  </script>
+
+  <!-- Add mobile menu toggle script at the end -->
+  <script>
+    // Mobile menu functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
+      
+      // Toggle sidebar on mobile
+      mobileMenuToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('show');
+        sidebarOverlay.classList.toggle('active');
+      });
+      
+      // Close sidebar when clicking overlay
+      sidebarOverlay.addEventListener('click', function() {
+        sidebar.classList.remove('show');
+        sidebarOverlay.classList.remove('active');
+      });
+      
+      // Existing sidebar toggle functionality
+      const sidebarToggle = document.querySelector('.sidebar-toggle');
+      if (sidebarToggle) {
+        sidebarToggle.addEventListener('click', function() {
+          sidebar.classList.toggle('sidebar-collapsed');
+          document.querySelector('.main-content').classList.toggle('expanded');
+        });
+      }
+    });
   </script>
 
   <script type="module" src="src/cluj.js"></script>

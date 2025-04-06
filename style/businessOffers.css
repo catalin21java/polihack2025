@@ -372,3 +372,83 @@
   border-radius: 10px !important;
   padding: 8px !important;
 }
+
+/* Responsive styles for business cards and map */
+@media (max-width: 992px) {
+  #business-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  #map-section {
+    padding: 30px 40px;
+  }
+  
+  #map-container {
+    height: 400px;
+  }
+}
+
+@media (max-width: 768px) {
+  #offers-container {
+    padding: 30px 20px;
+  }
+  
+  #business-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  #map-section {
+    padding: 30px 20px;
+    margin: 20px auto 40px;
+  }
+  
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+  
+  #modal-offers-carousel {
+    flex-direction: column;
+  }
+  
+  .offer-box {
+    min-width: auto;
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .qr-content {
+    width: 95%;
+    padding: 20px;
+  }
+  
+  .qr-code {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 576px) {
+  #offers-container h1 {
+    font-size: 24px;
+  }
+  
+  #map-section h2 {
+    font-size: 24px;
+  }
+  
+  #map-container {
+    height: 350px;
+  }
+  
+  .custom-dropdown {
+    padding-right: 20px;
+  }
+  
+  .custom-dropdown select {
+    font-size: 0.9rem;
+    padding: 10px 14px 10px 35px;
+    background-size: 16px, 100%;
+  }
+}
