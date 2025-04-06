@@ -48,7 +48,7 @@ html, body {
 	min-height: 100%;
 	min-width: 100%;
 	font-family: 'Libre Baskerville', serif;
-	background-color: var(--color-background);
+	background-color: #f0f5d5; /* enforce creme */
 	font-weight: 400;
 	font-size: var(--font-size-normal);
 	overflow-x: hidden;
@@ -93,7 +93,7 @@ canvas {
 	height: calc(100vh - var(--pad2));
 	margin: 0 auto;
 	z-index: 2;
-	background-color: var(--color-background);
+	background-color: #f0f5d5 !important;
 }
 
 .content .section.dark {
@@ -148,7 +148,9 @@ canvas {
 .content .ground-container {
 	position: relative;
 	overflow: hidden;
-	background-color: var(--color-background);
+	background: #f0f5d5 !important;
+    background-image: none !important;
+
 }
 
 .content .ground-container .parallax {
@@ -484,7 +486,7 @@ canvas {
 
 .filler-section {
     padding: 2rem 0;
-    background-color: #f8f9fa;
+	background-color: #f0f5d5;
     border-bottom: 1px solid #e9ecef;
 }
 
