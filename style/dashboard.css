@@ -1121,6 +1121,44 @@ input, select, textarea {
     background-color: var(--card-bg);
   }
   
+  /* ===== Today's Health Goals Section ===== */
+.goal-reminders {
+    grid-column: span 8;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.goal-reminders .card-header {
+    padding: var(--spacing-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background-color: var(--background);
+}
+
+.goal-reminders .card-header h2 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.goal-reminders .card-body {
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.95rem;
+    height: 100%;
+}
+
 /* ===== RESPONSIVE STYLES ===== */
 @media (max-width: 1400px) {
     .activity-chart {
@@ -1251,4 +1289,41 @@ input, select, textarea {
     .form-actions {
         flex-direction: column;
     }
+    /* === Health Goals Tips Section === */
+.health-tips {
+    margin-top: 1rem;
+    background-color: #f8fffa;
+    border: 1px solid var(--border);
+    border-radius: var(--border-radius-md);
+    padding: 1rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.health-tips h4 {
+    font-size: 1rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.health-tips p {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    padding-left: 1.2rem;
+    position: relative;
+    line-height: 1.4;
+}
+
+.health-tips p::before {
+    content: "🌱";
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.health-tips p.done::before {
+    content: "🎉";
+    color: var(--success);
+}
+
 }
