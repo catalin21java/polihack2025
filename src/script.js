@@ -133,7 +133,7 @@ const cities = [
     lat: 41.9028,
     lng: 12.4964,
     info: "Rome is the capital city of Italy and a special comune. It is the third most populous city in the European Union. Rome is known for its historic architecture, art, and ancient ruins including the Colosseum and Roman Forum.",
-    image: "https://images.unsplash.com/photo-1525874684-10fe8719e047?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cm9tZXxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=600&q=60",
+    image: "images/italy_new.jpg",
     url: "italy.html"
   },
   {
